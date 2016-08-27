@@ -1,0 +1,49 @@
+body {
+    background-color: #008081;
+    font-family: sans-serif;
+    font-size: 13px;
+}
+
+.window-style {
+    display: block;
+    background-color: #C0C0C0;
+    padding: 2px;
+    
+    border: #DAF0F0 solid 2px;
+    border-bottom: #282626 solid 2px;
+    border-right: #282626 solid 2px;
+}
+
+.window-style > header {
+    background-color: #010081;
+    padding: 3px;
+
+    color: #DADAEB;
+}
+
+.window-style > article {
+    padding: 10px;
+}
+
+#gameDiv {
+    width: 400px;
+    height: 300px;
+}
+
+#taskbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+
+    box-sizing: border-box;
+    background-color: #C0C0C0;
+    border: #DAF0F0 solid 2px;
+    border-right: #282626 solid 2px;
+    border-bottom: 0;
+}
+
+#taskbar > p {
+    margin: 5px;
+}
