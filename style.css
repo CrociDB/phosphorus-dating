@@ -18,6 +18,7 @@ body {
     background-color: #010081;
     padding: 3px;
 
+    font-weight: bold;
     color: #DADAEB;
 }
 
@@ -25,9 +26,43 @@ body {
     padding: 10px;
 }
 
+.people-list {
+    width: 150px;
+    padding: 5px;
+    background-color: white;
+
+    border: #DAF0F0 solid 2px;
+    border-top: #282626 solid 2px;
+    border-left: #282626 solid 2px;
+}
+
+.people-list li {
+    width: 100%;
+    border: #FFFFFF dotted 1px;
+    list-style-type: none;
+    padding: 3px;
+    margin: 0px;
+}
+
+.people-list li a {
+    display: block;
+    width: 100%;
+    padding: 3px;
+    margin: 0px;
+}
+
+.people-list li :active {
+    border: #282626 dotted 1px;
+}
+
+.people-list li :hover {
+    background-color: #010081;
+    color: #C0C0C0;
+}
+
 #gameDiv {
-    width: 400px;
-    height: 300px;
+    width: 600px;
+    height: 400px;
 }
 
 #taskbar {
