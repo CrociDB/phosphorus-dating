@@ -65,6 +65,7 @@ body {
 }
 
 .people-list li :hover {
+    cursor: default;
     background-color: #010081;
     color: #C0C0C0;
 }
@@ -98,7 +99,7 @@ body {
 }
 
 #gameDiv {
-    width: 933px;
+    width: 932px;
     height: 400px;
 }
 
