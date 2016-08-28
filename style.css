@@ -58,6 +58,7 @@ body {
     display: block;
     padding: 3px;
     margin: 0px;
+    color: #282626;
 }
 
 .people-list li :focus {
