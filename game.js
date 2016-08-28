@@ -42,8 +42,6 @@ var weightRand = function(arr) {
     var i = Math.random();
     var t = 0;
 
-    console.log(i);
-
     for (var j = 0; j < arr.length; j++)
     {
         t += arr[j].w;
@@ -63,8 +61,19 @@ var Person = function () {
 
 // Game
 (function() {
-    var area = document.getElementById("gameArea");
+    var p1 = document.getElementById("peopleList1");
+    var p2 = document.getElementById("peopleList2");
 
+    p1.innerHTML = "";
+    p2.innerHTML = "";
 
+    var people = [];
+    for (var i = 0; i < 8; i++)
+    {
+        var p = new Person();
+        people.push(p);
+        p1.innerHTML += '<li><a href="#">' + p.name + '</a></li>'; 
+        p2.innerHTML += '<li><a href="#">' + p.name + '</a></li>'; 
+    }
 
 })();

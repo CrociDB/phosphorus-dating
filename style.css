@@ -2,6 +2,13 @@ body {
     background-color: #008081;
     font-family: sans-serif;
     font-size: 13px;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .window-style {
@@ -27,8 +34,11 @@ body {
 }
 
 .people-list {
-    width: 150px;
-    padding: 5px;
+    display: block;
+    width: 120px;
+    height: 250px;
+    padding: 0;
+    margin: 0;
     background-color: white;
 
     border: #DAF0F0 solid 2px;
@@ -37,21 +47,20 @@ body {
 }
 
 .people-list li {
-    width: 100%;
-    border: #FFFFFF dotted 1px;
     list-style-type: none;
-    padding: 3px;
+    padding: 0px;
     margin: 0px;
 }
 
 .people-list li a {
+    border: #FFFFFF dotted 1px;
+    text-decoration: none;
     display: block;
-    width: 100%;
     padding: 3px;
     margin: 0px;
 }
 
-.people-list li :active {
+.people-list li :focus {
     border: #282626 dotted 1px;
 }
 
@@ -60,8 +69,36 @@ body {
     color: #C0C0C0;
 }
 
+.people-detail {
+    width: 300px;
+    height: 230px;
+    padding: 10px;
+    background-color: white;
+
+    border: #DAF0F0 solid 2px;
+    border-top: #282626 solid 2px;
+    border-left: #282626 solid 2px;
+}
+
+.float-left {
+    float: left;
+    margin-right: 5px;
+}
+
+.float-left-last {
+    float: left;
+}
+
+.separator {
+    border: #FFFFFF solid 1px;
+}
+
+#peopleArea {
+    overflow: auto;
+}
+
 #gameDiv {
-    width: 600px;
+    width: 933px;
     height: 400px;
 }
 
