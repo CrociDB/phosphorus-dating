@@ -18,12 +18,13 @@ var traits = [
 
 var female_names = ["Joanna", "Linda", "Lorenna", "Alyssa", "Anna", "Anne", "Eduarda"];
 var male_names = ["Bruno", "John", "Marcus", "Jay", "Rodrigo"];
-var last_names = ["Smith", "Silva", "Johnson", "Kim", "Groom", "Lee"]
+var last_names = ["Smith", "Silva", "Johnson", "Kim", "Groom", "Lee", "Yamada"]
 
 var sex_orient = [ 
-    { w: .5, t: "Straight" },
-    { w: .25, t: "Homosexual" },
-    { w: .15, t: "Bisexual" },
+    { w: .4, t: "Straight" },
+    { w: .35, t: "Homosexual" },
+    { w: .10, t: "Bisexual" },
+    { w: .10, t: "Pansexual" },
     { w: .05, t: "Asexual" }
 ];
 
@@ -40,6 +41,8 @@ var rangeRand = function (min, max) {
 var weightRand = function(arr) {
     var i = Math.random();
     var t = 0;
+
+    console.log(i);
 
     for (var j = 0; j < arr.length; j++)
     {
