@@ -67,11 +67,7 @@ function peopleListTemplate(l, id, name) {
     return t.innerHTML.replace("$1", l).replace("$2", id).replace("$3", name);
 }
 
-// Game
-
-var clickPerson = function(l, id) {
-    showDialogOk("Hey!", "Testttt", function() { console.log(id); });
-};
+// Dialog System
 
 var dialog = { 
     bg: gId("dialogDiv"), 
@@ -105,20 +101,39 @@ var showDialogOk = function(title, section, okCallback) {
     dialog.show();
 };
 
+// Game
+
+var Game = function() {
+    this.start = function () {
+        this.people = [];
+        for (var i = 0; i < 10; i++)
+        {
+            var p = new Person();
+            this.people.push(p);
+        }
+        this.drawPeople();
+    };
+
+    this.drawPeople = function() {
+        var p1 = gId("peopleList1");
+        var p2 = gId("peopleList2");
+
+        var id = 0;
+        this.people.forEach(function(p) {
+            p1.innerHTML += peopleListTemplate(0, id, p.name);
+            p2.innerHTML += peopleListTemplate(1, id, p.name);
+            id++; 
+        });
+    };
+
+    this.clickPerson = function(l, id) {
+        showDialogOk("Hey!", "Testttt", function() { console.log(id); });
+    };
+}
+
+var game = new Game();
+
 (function() {
-    var p1 = gId("peopleList1");
-    var p2 = gId("peopleList2");
-
-    p1.innerHTML = "";
-    p2.innerHTML = "";
-
-    var people = [];
-    for (var i = 0; i < 8; i++)
-    {
-        var p = new Person();
-        people.push(p);
-        p1.innerHTML += peopleListTemplate(0, i, p.name);
-        p2.innerHTML += peopleListTemplate(0, i, p.name); 
-    }
+    game.start();
 })();
 

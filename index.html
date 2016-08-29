@@ -10,12 +10,12 @@
                 <ul class="inner-object people-list float-left" id="peopleList1">
                 </ul>
 
-                <div class="inner-object people-detail float-left">
+                <div id="personDescription1" class="inner-object people-detail float-left">
                     <h1>Name</h1>
                     <p>About the person... whatevs</p>
                 </div>
 
-                <div class="inner-object people-detail float-left">
+                <div id="personDescription2" class="inner-object people-detail float-left">
                     <h1>Name</h1>
                     <p>About the person... whatevs</p>
                 </div>
@@ -63,7 +63,7 @@
         <!-- Templates -->
 
         <div id="peopleListTemplate" class="hidden">
-            <li><a href="javascript:clickPerson($1, $2);">$3</a></li>
+            <li><a href="javascript:game.clickPerson($1, $2);">$3</a></li>
         </div>
 
         <div id="dateListTemplate" class="hidden">
