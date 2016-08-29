@@ -4,30 +4,41 @@
         <link rel="stylesheet" href="style.css" media="screen">
     </head>
     <body>
-        <div id="gameDiv" class="window-style">
+        <div id="gameDiv" class="window-style outter-object">
             <header>Phosphorus Dating</header>
             <article id="peopleArea">
-                <ul class="people-list float-left" id="peopleList1">
+                <ul class="inner-object people-list float-left" id="peopleList1">
                 </ul>
 
-                <div class="people-detail float-left">
+                <div class="inner-object people-detail float-left">
                     <h1>Name</h1>
                     <p>About the person... whatevs</p>
                 </div>
 
-                <div class="people-detail float-left">
+                <div class="inner-object people-detail float-left">
                     <h1>Name</h1>
                     <p>About the person... whatevs</p>
                 </div>
 
-                <ul class="people-list float-left-last" id="peopleList2">
+                <ul class="inner-object people-list float-left-last" id="peopleList2">
                 </ul>
             </article>
             <hr class="separator">
             <article id="dateArea">
-                <div class="float-left" id="dateList">
+                <ul class="inner-object people-list date-list float-left" id="dateList">
+                    <li><p>Bruno and Eduarda</p><progress value="22" max="100" class="inner-object"></progress></li>
+                    <li><p>Bruno and Eduarda</p><progress value="22" max="100" class="inner-object"></progress></li>
+                    <li><p>Bruno and Eduarda</p><progress value="22" max="100" class="inner-object"></progress></li>
+                </ul>
+                <div class="float-left" id="gameInfo">
+                    <h1>Couples you mached</h1>
+                    <p>1</p>
+                    <h1>Successful couples</h1>
+                    <p>1</p>
                 </div>
-                <div class="float-left-last" id="dateControls">
+                <div class="float-right" id="dateControls">
+                    <a href="#" class="outter-object button big-button"><span>Match Couple</span></a>
+                    <a href="#" class="outter-object button">Help</a>
                 </div>
             </article>
         </div>
@@ -35,6 +46,18 @@
         <div id="taskbar">
             <p>Start</p>
         </div>
+
+        <!-- Templates -->
+
+        <div id="peopleListTemplate" class="hidden">
+            <li><a href="javascript:clickList($1, $2);">$3</a></li>
+        </div>
+
+        <div id="dateListTemplate" class="hidden">
+            <li><p>$1</p><progress value="0" max="100" class="inner-object"></progress></li>
+        </div>
+
+        <!-- Script -->
         <script src="game.js"></script>
     </body>
 </html>

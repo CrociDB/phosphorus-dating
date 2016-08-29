@@ -30,6 +30,8 @@ var sex_orient = [
 
 // Util
 
+var gId = function(t) { return document.getElementById(t); };
+
 Array.prototype.rand = function() {
     return this[Math.floor((Math.random() * this.length))];
 }
@@ -59,10 +61,16 @@ var Person = function () {
     this.orientation = weightRand(sex_orient);
 };
 
+// Templates
+function peopleListTemplate(l, id, name) {
+    var t = gId("peopleListTemplate");
+    return t.innerHTML.replace("$1", l).replace("$2", id).replace("$3", name);
+}
+
 // Game
 (function() {
-    var p1 = document.getElementById("peopleList1");
-    var p2 = document.getElementById("peopleList2");
+    var p1 = gId("peopleList1");
+    var p2 = gId("peopleList2");
 
     p1.innerHTML = "";
     p2.innerHTML = "";
@@ -72,8 +80,8 @@ var Person = function () {
     {
         var p = new Person();
         people.push(p);
-        p1.innerHTML += '<li><a href="#">' + p.name + '</a></li>'; 
-        p2.innerHTML += '<li><a href="#">' + p.name + '</a></li>'; 
+        p1.innerHTML += peopleListTemplate(0, i, p.name);
+        p2.innerHTML += peopleListTemplate(0, i, p.name); 
     }
 
 })();

@@ -11,14 +11,54 @@ body {
     user-select: none;
 }
 
+.hidden {
+    position: absolute;
+    visibility: hidden;
+}
+
+.inner-object {
+    border: #DAF0F0 solid 2px;
+    border-top: #282626 solid 2px;
+    border-left: #282626 solid 2px;
+}
+
+.outter-object {
+    border: #DAF0F0 solid 2px;
+    border-bottom: #282626 solid 2px;
+    border-right: #282626 solid 2px;
+}
+
+.button {
+    display: block;
+    margin-bottom: 5px;
+    padding: 5px;
+
+    text-align: center;
+    text-decoration: none;
+    color: 0;
+}
+
+.button:hover {
+    cursor: default;
+}
+
+.button:active {
+    cursor: default;
+    border: #DAF0F0 solid 2px;
+    border-top: #282626 solid 2px;
+    border-left: #282626 solid 2px;
+}
+
+.big-button {
+    display: inline-block;
+    padding: 30px;
+    font-size: 16px;
+}
+
 .window-style {
     display: block;
     background-color: #C0C0C0;
     padding: 2px;
-    
-    border: #DAF0F0 solid 2px;
-    border-bottom: #282626 solid 2px;
-    border-right: #282626 solid 2px;
 }
 
 .window-style > header {
@@ -40,10 +80,6 @@ body {
     padding: 0;
     margin: 0;
     background-color: white;
-
-    border: #DAF0F0 solid 2px;
-    border-top: #282626 solid 2px;
-    border-left: #282626 solid 2px;
 }
 
 .people-list li {
@@ -76,10 +112,32 @@ body {
     height: 230px;
     padding: 10px;
     background-color: white;
+}
 
-    border: #DAF0F0 solid 2px;
-    border-top: #282626 solid 2px;
-    border-left: #282626 solid 2px;
+.date-list li {
+    padding: 5px;
+    margin: 0;
+}
+
+.date-list li p {
+    margin: 0;
+}
+
+.date-list li progress::-moz-progress-bar { background: #010081; }
+.date-list li progress::-webkit-progress-bar { background: #C0C0C0; }
+.date-list li progress::-webkit-progress-value { background: #010081; }
+.date-list li progress {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 20px;
+
+    background-color: #C0C0C0;
+}
+
+.float-right {
+    float: right;
 }
 
 .float-left {
@@ -92,7 +150,22 @@ body {
 }
 
 .separator {
-    border: #FFFFFF solid 1px;
+    border: #DAF0F0 solid 1px;
+    border-top: #282626 solid 1px;
+    border-left: #282626 solid 1px;
+    margin: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#dateArea {
+    overflow: auto;
+}
+
+#dateList {
+    width: 250px;
+    height: 150px;
+    overflow-y: auto;
 }
 
 #peopleArea {
@@ -101,7 +174,7 @@ body {
 
 #gameDiv {
     width: 932px;
-    height: 400px;
+    height: 500px;
 }
 
 #taskbar {
