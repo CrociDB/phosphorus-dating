@@ -68,6 +68,43 @@ function peopleListTemplate(l, id, name) {
 }
 
 // Game
+
+var clickPerson = function(l, id) {
+    showDialogOk("Hey!", "Testttt", function() { console.log(id); });
+};
+
+var dialog = { 
+    bg: gId("dialogDiv"), 
+    dw: gId("dialogWindow"),
+    title: gId("dialogTitle"),
+    section: gId("dialogSection"),
+    ok: gId("dialogOk"),
+    cancel: gId("dialogCancel"),
+    hide: function () { 
+        this.bg.style = "visibility: hidden";
+        this.dw.style = "visibility: hidden";
+    },
+    show: function () {
+        this.bg.style = "visibility: visible";
+        this.dw.style = "visibility: visible";
+    },
+    onOk: null,
+    okCancel: null 
+};
+
+var showDialogOk = function(title, section, okCallback) {
+    dialog.title.innerHTML = title;
+    dialog.section.innerHTML = section;
+    dialog.onOk = function () {
+        dialog.hide();
+        okCallback();
+    };
+    dialog.onCancel = function () {
+        dialog.hide();
+    };
+    dialog.show();
+};
+
 (function() {
     var p1 = gId("peopleList1");
     var p2 = gId("peopleList2");
@@ -83,5 +120,5 @@ function peopleListTemplate(l, id, name) {
         p1.innerHTML += peopleListTemplate(0, i, p.name);
         p2.innerHTML += peopleListTemplate(0, i, p.name); 
     }
-
 })();
+

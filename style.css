@@ -49,6 +49,10 @@ body {
     border-left: #282626 solid 2px;
 }
 
+.inline-button {
+    display: inline;
+}
+
 .big-button {
     display: inline-block;
     padding: 30px;
@@ -69,8 +73,40 @@ body {
     color: #DADAEB;
 }
 
-.window-style > article {
+.window-style > section {
     padding: 10px;
+}
+
+.dialog-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    background-color: #282626;
+    opacity: 0.5;
+}
+
+.dialog {
+    position: absolute;
+    top: 30%;
+    bottom: 30%;
+    left: 30%;
+    right: 30%;
+    width: 300px;
+    height: 140px;
+
+    margin: auto;
+}
+
+.button-container {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    text-align: center;
 }
 
 .people-list {

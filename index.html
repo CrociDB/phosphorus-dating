@@ -6,7 +6,7 @@
     <body>
         <div id="gameDiv" class="window-style outter-object">
             <header>Phosphorus Dating</header>
-            <article id="peopleArea">
+            <section id="peopleArea">
                 <ul class="inner-object people-list float-left" id="peopleList1">
                 </ul>
 
@@ -22,9 +22,9 @@
 
                 <ul class="inner-object people-list float-left-last" id="peopleList2">
                 </ul>
-            </article>
+            </section>
             <hr class="separator">
-            <article id="dateArea">
+            <section id="dateArea">
                 <ul class="inner-object people-list date-list float-left" id="dateList">
                     <li><p>Bruno and Eduarda</p><progress value="22" max="100" class="inner-object"></progress></li>
                     <li><p>Bruno and Eduarda</p><progress value="22" max="100" class="inner-object"></progress></li>
@@ -40,17 +40,30 @@
                     <a href="#" class="outter-object button big-button"><span>Match Couple</span></a>
                     <a href="#" class="outter-object button">Help</a>
                 </div>
-            </article>
+            </section>
         </div>
 
         <div id="taskbar">
             <p>Start</p>
         </div>
 
+        <!-- Dialog -->
+        <div id="dialogDiv" class="dialog-container hidden"></div>
+        <div id="dialogWindow" class="window-style outter-object dialog hidden">
+                <header id="dialogTitle">Message</header>
+                <section id="dialogSection">
+                    <p>Some things happened here.</p>
+                </section>
+                <div class="button-container">
+                    <a href="javascript:dialog.onCancel();" id="dialogCancel" class="outter-object button inline-button">Cancel</a>
+                    <a href="javascript:dialog.onOk();" id="dialogOk" class="outter-object button inline-button">Ok</a>
+                </div>
+            </div>
+
         <!-- Templates -->
 
         <div id="peopleListTemplate" class="hidden">
-            <li><a href="javascript:clickList($1, $2);">$3</a></li>
+            <li><a href="javascript:clickPerson($1, $2);">$3</a></li>
         </div>
 
         <div id="dateListTemplate" class="hidden">
