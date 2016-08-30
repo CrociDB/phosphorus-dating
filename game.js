@@ -32,16 +32,14 @@ var traits = [
     { s: 6, d: 0, o: 0, t: "God in first place." },
 ];
 
-var female_names = ["Joanna", "Linda", "Lorenna", "Alyssa", "Anna", "Anne", "Eduarda", "Kat"];
-var male_names = ["Bruno", "John", "Marcus", "Jay", "Rodrigo", "Anderson", "Val", "Germano", "George", "Mamoru"];
-var last_names = ["Smith", "Silva", "Johnson", "Kim", "Groom", "Lee", "Yamada", "Kilmer", "Lopes", "Miyagawa"]
+var female_names = ["Joanna", "Linda", "Lorenna", "Alyssa", "Anna", "Anne", "Eduarda", "Kat", "Giuliana", "Lais", "Adrianne", "Gal", "Olivia"];
+var male_names = ["Bruno", "John", "Marcus", "Jay", "Rodrigo", "Anderson", "Val", "Germano", "George", "Mamoru", "Ed", "Felipe", "Klev"];
+var last_names = ["Smith", "Silva", "Johnson", "Kim", "Cruz", "Lee", "Yamada", "Kilmer", "Lopes", "Miya", "Drake", "Lira", "Love", "Lake"]
 
 var sex_orient = [ 
-    { w: .4, t: "Straight" },
-    { w: .35, t: "Homosexual" },
-    { w: .10, t: "Bisexual" },
-    { w: .10, t: "Pansexual" },
-    { w: .05, t: "Asexual" }
+    { w: .55, t: "Straight" },       // 0
+    { w: .30, t: "Homosexual" },     // 1
+    { w: .15, t: "Bisexual" },       // 2
 ];
 
 // Util
@@ -67,6 +65,15 @@ var weightRand = function(arr) {
     }
 }
 
+var getOrientIndex = function(t) {
+    for (var j = 0; j < sex_orient.length; j++)
+    {
+        if (sex_orient[j].t === t) {
+            return j;
+        }
+    }
+};
+
 var getTraitsExcept = function(exception) {
     var ts = [];
     traits.forEach(function(t) {
@@ -88,6 +95,7 @@ var Person = function () {
 
     // Sexual orientation
     this.orientation = weightRand(sex_orient);
+    this.sex_orient = getOrientIndex(this.orientation);
 
     // Name
     if (this.gender == 0) this.name = female_names.rand() + " " + last_names.rand();
@@ -116,14 +124,50 @@ var Person = function () {
         }
     });
 
-    console.log(this.traits);
-    console.log(this.bio);
-
     var bioModifier = rangeRand(0, 100);
     if (bioModifier > 92) {
         this.bio = this.bio.toLowerCase();
     } else if (bioModifier > 89) {
         this.bio = this.bio.toUpperCase();
+    }
+};
+
+// Matches
+var Match = function(p1, p2) {
+    this.p1 = p1;
+    this.p2 = p2;
+
+    this.calculate = function() {
+        var t = 0;
+
+        // Gender and Sexual orientation
+        if (p1.sex_orient == 2 && p2.sex_orient == 2) {
+            t += 100;
+        } else if (p1.sex_orient == 0 && p2.sex_orient == 0) {
+            t += p1.gender != p2.gender ? 100 : -150;
+        } else if (p1.sex_orient == 1 && p2.sex_orient == 1) {
+            t += p1.gender == p2.gender ? 100 : -150;
+        } else if (p1.sex_orient == 0 || p2.sex_orient == 0) {
+            var v = p1.gender != p2.gender ? 100 : -100; 
+            if (p1.sex_orient == 2 || p2.sex_orient == 2) {
+                t += v;
+            } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
+                t -= v;
+            } 
+        } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
+            var v = p1.gender == p2.gender ? 100 : -100; 
+            if (p1.sex_orient == 2 || p2.sex_orient == 2) {
+                t += v;
+            } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
+                t -= v;
+            } 
+        }
+
+        // Traits
+        var tr1 = this.p1.traits.slice(0);
+        var tr2 = this.p2.traits.slice(0);
+
+        return t;
     }
 };
 
@@ -216,6 +260,14 @@ var Game = function() {
         p1.innerHTML = peopleDetail(this.currentPeople[0]);
         p2.innerHTML = peopleDetail(this.currentPeople[1]);
     };
+
+    this.match = function() {
+        var m = new Match(this.currentPeople[0], this.currentPeople[1]);
+
+        console.log(this.currentPeople);
+
+        console.log(m.calculate());
+    }
 }
 
 var game = new Game();

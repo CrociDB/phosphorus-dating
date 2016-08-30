@@ -22,9 +22,6 @@
             <hr class="separator">
             <section id="dateArea">
                 <ul class="inner-object people-list date-list float-left" id="dateList">
-                    <li><p>Bruno and Eduarda</p><progress value="22" max="100" class="inner-object"></progress></li>
-                    <li><p>Bruno and Eduarda</p><progress value="22" max="100" class="inner-object"></progress></li>
-                    <li><p>Bruno and Eduarda</p><progress value="22" max="100" class="inner-object"></progress></li>
                 </ul>
                 <div class="float-left" id="gameInfo">
                     <h1>Couples you mached</h1>
@@ -33,7 +30,7 @@
                     <p>1</p>
                 </div>
                 <div class="float-right" id="dateControls">
-                    <a href="#" class="outter-object button big-button"><span>Match Couple</span></a>
+                    <a href="javascript:game.match();" class="outter-object button big-button"><span>Match Couple</span></a>
                     <a href="#" class="outter-object button">Help</a>
                 </div>
             </section>
@@ -72,6 +69,10 @@
             <article>$3</article>
             <div class="div-quote-open">&ldquo;</div>
             <div class="div-quote-close">&rdquo;</div>
+        </div>
+
+        <div id="matchList" class="hidden">
+            <li><p>$1</p><progress id="matchId-$2" value="0" max="100" class="inner-object"></progress></li>
         </div>
 
         <!-- Script -->
