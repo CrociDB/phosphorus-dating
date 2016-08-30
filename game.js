@@ -1,24 +1,40 @@
 // Data
 var subjects = [
-    { name: "Video Game" },
-    { name: "Play Tenis" },
-    { name: "Soccer" },
-    { name: "Drink" }
+    { name: "Video Game" },       // 0
+    { name: "Read" },             // 1
+    { name: "Soccer" },           // 2
+    { name: "Drink" },            // 3
+    { name: "Computer" },         // 4
+    { name: "Fitness" },          // 5
+    { name: "Science" },          // 6
 ];
 
 var traits = [
-    { subject: 0, direction: 1, text: "I play videogames all day." },
-    { subject: 1, direction: 1, text: "Love Tenis." },
-    { subject: 2, direction: 1, text: "Wanna join me in a soccer game?" },
-    { subject: 2, direction: 0, text: "Oh, and I seriously hate people who watch soccer." },
-    { subject: 3, direction: 1, text: "Man, I love beer!" },
-    { subject: 3, direction: 1, text: "We can go out for a beer?" },
-    { subject: 3, direction: 0, text: "If you're wondering, I don't drink." }
+    // s: subject, d: direction, t: text
+    { s: 0, d: 2, o: 1, t: "One of my main activities: play videogames." },
+    { s: 1, d: 2, o: 1, t: "Comic Books." },
+    { s: 1, d: 2, o: 1, t: "Books." },
+    { s: 1, d: 2, o: 1, t: "Magazines." },
+    { s: 1, d: 0, o: 1, t: "Books are the old media." },
+    { s: 2, d: 2, o: 5, t: "Wanna join me in a soccer game?" },
+    { s: 2, d: 0, o: 5, t: "Oh, don't talk to me if you watch soccer." },
+    { s: 3, d: 2, o: 1, t: "Man, I love beer!" },
+    { s: 3, d: 2, o: 5, t: "Maybe we can go out for a beer?" },
+    { s: 3, d: 2, o: 0, t: "Love me some wine." },
+    { s: 3, d: 0, o: 3, t: "If you're wondering, I don't drink." },
+    { s: 3, d: 0, o: 3, t: "No alcohol for me." },
+    { s: 4, d: 2, o: 0, t: "I write computer programs." },
+    { s: 4, d: 2, o: 0, t: "I speak C++." },
+    { s: 5, d: 2, o: 3, t: "Jogging." },
+    { s: 5, d: 2, o: 3, t: "Play basketball." },
+    { s: 5, d: 0, o: 5, t: "High five sedentary people!" },
+    { s: 6, d: 2, o: 1, t: "Hail Carl Sagan!" },
+    { s: 6, d: 0, o: 0, t: "God in first place." },
 ];
 
-var female_names = ["Joanna", "Linda", "Lorenna", "Alyssa", "Anna", "Anne", "Eduarda"];
-var male_names = ["Bruno", "John", "Marcus", "Jay", "Rodrigo"];
-var last_names = ["Smith", "Silva", "Johnson", "Kim", "Groom", "Lee", "Yamada"]
+var female_names = ["Joanna", "Linda", "Lorenna", "Alyssa", "Anna", "Anne", "Eduarda", "Kat"];
+var male_names = ["Bruno", "John", "Marcus", "Jay", "Rodrigo", "Anderson", "Val", "Germano", "George", "Mamoru"];
+var last_names = ["Smith", "Silva", "Johnson", "Kim", "Groom", "Lee", "Yamada", "Kilmer", "Lopes", "Miyagawa"]
 
 var sex_orient = [ 
     { w: .4, t: "Straight" },
@@ -51,18 +67,64 @@ var weightRand = function(arr) {
     }
 }
 
-// Person
+var getTraitsExcept = function(exception) {
+    var ts = [];
+    traits.forEach(function(t) {
+        for(var i = 0; i < exception.length; i++) {
+            if (t.s == exception[i].s) {
+                return;
+            }
+        }
+        ts.push(t);
+    });
 
+    return ts;
+};
+
+// Person
 var Person = function () {
+    // Gender
     this.gender = rangeRand(0, 1);
+
+    // Sexual orientation
+    this.orientation = weightRand(sex_orient);
+
+    // Name
     if (this.gender == 0) this.name = female_names.rand() + " " + last_names.rand();
     else this.name = male_names.rand() + " " + last_names.rand();
 
+    // Age
     var max = 30;
     if (rangeRand(0, 100) > 65) max = 52
     this.age = rangeRand(18, max);
 
-    this.orientation = weightRand(sex_orient);
+    // Trais
+    this.traits = [];
+    this.bio = "";
+    var amount = rangeRand(2, 4);
+    for (var i = 0; i < amount; i++) {
+        var t = getTraitsExcept(this.traits).rand();
+        this.traits.push(t);
+    }
+
+    var that = this;
+    this.traits.sort(function(a, b) { return a.o - b.o });
+    this.traits.forEach(function(t) {
+        that.bio += t.t + " ";
+        if (rangeRand(1,100) > 90) {
+            that.bio += "<br><br>";
+        }
+    });
+
+    console.log(this.traits);
+    console.log(this.bio);
+
+    var bioModifier = rangeRand(0, 100);
+    if (bioModifier > 92) {
+        this.bio = this.bio.toLowerCase();
+    } else if (bioModifier > 89) {
+        this.bio = this.bio.toUpperCase();
+    }
 };
 
 // Templates
@@ -75,9 +137,9 @@ function peopleDetail(person) {
     var t = gId("peopleDetail");
 
     var s = (person.gender == 0 ? "Female" : "Male") + " - " + person.orientation;
-    var d = "I'm a fun person, I love cinema.";
+    
     return t.innerHTML.replace("$1", person.name + ", " + person.age)
-                      .replace("$2", s).replace("$3", d);
+                      .replace("$2", s).replace("$3", person.bio);
 }
 
 // Dialog System
