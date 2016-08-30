@@ -58,6 +58,10 @@ var Person = function () {
     if (this.gender == 0) this.name = female_names.rand() + " " + last_names.rand();
     else this.name = male_names.rand() + " " + last_names.rand();
 
+    var max = 30;
+    if (rangeRand(0, 100) > 65) max = 52
+    this.age = rangeRand(18, max);
+
     this.orientation = weightRand(sex_orient);
 };
 
@@ -65,6 +69,15 @@ var Person = function () {
 function peopleListTemplate(l, id, name) {
     var t = gId("peopleListTemplate");
     return t.innerHTML.replace("$1", l).replace("$2", id).replace("$3", name);
+}
+
+function peopleDetail(person) {
+    var t = gId("peopleDetail");
+
+    var s = (person.gender == 0 ? "Female" : "Male") + " - " + person.orientation;
+    var d = "I'm a fun person, I love cinema.";
+    return t.innerHTML.replace("$1", person.name + ", " + person.age)
+                      .replace("$2", s).replace("$3", d);
 }
 
 // Dialog System
@@ -112,6 +125,9 @@ var Game = function() {
             this.people.push(p);
         }
         this.drawPeople();
+
+        this.currentPeople = [this.people[0], this.people[0]];
+        this.renderDetails();
     };
 
     this.drawPeople = function() {
@@ -127,7 +143,16 @@ var Game = function() {
     };
 
     this.clickPerson = function(l, id) {
-        showDialogOk("Hey!", "Testttt", function() { console.log(id); });
+        this.currentPeople[l] = this.people[id];
+        this.renderDetails(l);
+    };
+
+    this.renderDetails = function() {
+        var p1 = gId("personDescription1");
+        var p2 = gId("personDescription2");
+
+        p1.innerHTML = peopleDetail(this.currentPeople[0]);
+        p2.innerHTML = peopleDetail(this.currentPeople[1]);
     };
 }
 
