@@ -30,6 +30,11 @@ var traits = [
     { s: 5, d: 0, o: 5, t: "High five sedentary people!" },
     { s: 6, d: 2, o: 1, t: "Hail Carl Sagan!" },
     { s: 6, d: 0, o: 0, t: "God in first place." },
+    // Add about politics
+    // Add about internet promising
+    // Add about dog and cat person
+    // Create logic for removing commas and adding commas instead of period
+    // Add special emo rule
 ];
 
 var female_names = ["Joanna", "Linda", "Lorenna", "Alyssa", "Anna", "Anne", "Eduarda", "Kat", "Giuliana", "Lais", "Adrianne", "Gal", "Olivia"];
@@ -48,6 +53,32 @@ var gId = function(t) { return document.getElementById(t); };
 
 Array.prototype.rand = function() {
     return this[Math.floor((Math.random() * this.length))];
+}
+
+Array.prototype.group = function(keyFunction) {
+    var groups = {};
+    this.forEach(function(el) {
+        var key = keyFunction(el);
+        if (key in groups == false) {
+            groups[key] = [];
+        }
+        groups[key].push(el);
+    });
+    return Object.keys(groups).map(function(key) {
+        return {
+            key: key,
+            values: groups[key]
+        };
+    });
+};
+
+Array.prototype.unique = function() {
+    return this.reduce(function(accum, current) {
+        if (accum.indexOf(current) < 0) {
+            accum.push(current);
+        }
+        return accum;
+    }, []);
 }
 
 var rangeRand = function (min, max) {
@@ -115,14 +146,13 @@ var Person = function () {
         this.traits.push(t);
     }
 
-    var that = this;
     this.traits.sort(function(a, b) { return a.o - b.o });
     this.traits.forEach(function(t) {
-        that.bio += t.t + " ";
+        this.bio += t.t + " ";
         if (rangeRand(1,100) > 90) {
-            that.bio += "<br><br>";
+            this.bio += "<br><br>";
         }
-    });
+    }, this);
 
     var bioModifier = rangeRand(0, 100);
     if (bioModifier > 92) {
@@ -138,37 +168,63 @@ var Match = function(p1, p2) {
     this.p2 = p2;
 
     this.calculate = function() {
-        var t = 0;
+        this.sex = 0;
 
         // Gender and Sexual orientation
         if (p1.sex_orient == 2 && p2.sex_orient == 2) {
-            t += 100;
+            this.sex += 100;
         } else if (p1.sex_orient == 0 && p2.sex_orient == 0) {
-            t += p1.gender != p2.gender ? 100 : -150;
+            this.sex += p1.gender != p2.gender ? 100 : -150;
         } else if (p1.sex_orient == 1 && p2.sex_orient == 1) {
-            t += p1.gender == p2.gender ? 100 : -150;
+            this.sex += p1.gender == p2.gender ? 100 : -150;
         } else if (p1.sex_orient == 0 || p2.sex_orient == 0) {
             var v = p1.gender != p2.gender ? 100 : -100; 
             if (p1.sex_orient == 2 || p2.sex_orient == 2) {
-                t += v;
+                this.sex += v;
             } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
-                t -= v;
+                this.sex -= v;
             } 
         } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
             var v = p1.gender == p2.gender ? 100 : -100; 
             if (p1.sex_orient == 2 || p2.sex_orient == 2) {
-                t += v;
+                this.sex += v;
             } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
-                t -= v;
+                this.sex -= v;
             } 
         }
 
         // Traits
-        var tr1 = this.p1.traits.slice(0);
-        var tr2 = this.p2.traits.slice(0);
+        this.positive = 0;
+        this.neutral = 0;
+        this.negative = 0;
 
-        return t;
+        var tr1sub = this.p1.traits.map((t) => t.s);
+        var tr2sub = this.p2.traits.map((t) => t.s);
+        var intersection = this.p1.traits.filter((t) => tr2sub.indexOf(t.s) >= 0).concat(
+                           this.p2.traits.filter((t) => tr1sub.indexOf(t.s) >= 0));
+
+        var tr1f = this.p1.traits.filter((t) => intersection.map((t) => t.s).indexOf(t.s) == -1);
+        var tr2f = this.p2.traits.filter((t) => intersection.map((t) => t.s).indexOf(t.s) == -1);
+
+        var ig = intersection.group((e) => e.s);
+        ig.forEach(function(e) {
+            var sum = e.values.reduce(function(acc, v, i, a) {
+                return acc + v.d;
+            }, 0) - 2;
+
+            if (sum == 0) {
+                this.negative++;
+            } else {
+                this.positive++;
+            }
+        }, this);
+
+        this.neutral = tr1f.length + tr2f.length;
+
+        this.subjects = this.p1.traits.concat(this.p2.traits).unique().map((t) => subjects[t.s]);
     }
+
+    this.calculate();
 };
 
 // Templates
@@ -263,10 +319,7 @@ var Game = function() {
 
     this.match = function() {
         var m = new Match(this.currentPeople[0], this.currentPeople[1]);
-
-        console.log(this.currentPeople);
-
-        console.log(m.calculate());
+        console.log(m);
     }
 }
 
