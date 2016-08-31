@@ -180,7 +180,9 @@ var Person = function () {
     // Emo modifier
     bioModifier = rangeRand(0, 100);
     if (bioModifier > 97) {
-        this.bio = [].map.call(this.bio, (e) => rangeRand(0, 1) == 0 ? e.toUpperCase() : e.toLowerCase()).join(""); 
+        this.bio = [].map.call(this.bio, function(e) {
+            return (rangeRand(0, 1) == 0 ? e.toUpperCase() : e.toLowerCase()).join("");
+        });
     }
 };
 
@@ -220,15 +222,16 @@ var Match = function(p1, p2) {
         this.neutral = 0;
         this.negative = 0;
 
-        var tr1sub = this.p1.traits.map((t) => t.s);
-        var tr2sub = this.p2.traits.map((t) => t.s);
-        var intersection = this.p1.traits.filter((t) => tr2sub.indexOf(t.s) >= 0).concat(
-                           this.p2.traits.filter((t) => tr1sub.indexOf(t.s) >= 0));
+        var tts = function(t) { return t.s; };
+        var tr1sub = this.p1.traits.map(tts);
+        var tr2sub = this.p2.traits.map(tts);
+        var intersection = this.p1.traits.filter(function(t) { return tr2sub.indexOf(t.s) >= 0; }).concat(
+                           this.p2.traits.filter(function(t) { return tr2sub.indexOf(t.s) >= 0; }));
 
-        var tr1f = this.p1.traits.filter((t) => intersection.map((t) => t.s).indexOf(t.s) == -1);
-        var tr2f = this.p2.traits.filter((t) => intersection.map((t) => t.s).indexOf(t.s) == -1);
+        var tr1f = this.p1.traits.filter(function (t) { return intersection.map(tts).indexOf(t.s) == -1; });
+        var tr2f = this.p2.traits.filter(function (t) { return intersection.map(tts).indexOf(t.s) == -1; });
 
-        var ig = intersection.group((e) => e.s);
+        var ig = intersection.group(tts);
         ig.forEach(function(e) {
             var sum = e.values.reduce(function(acc, v, i, a) {
                 return acc + v.d;
@@ -243,7 +246,7 @@ var Match = function(p1, p2) {
 
         this.neutral = tr1f.length + tr2f.length;
 
-        this.subjects = this.p1.traits.concat(this.p2.traits).unique().map((t) => subjects[t.s]);
+        this.subjects = this.p1.traits.concat(this.p2.traits).unique().map(function (t) { return subjects[t.s]; });
     }
 
     this.calculate();
