@@ -181,8 +181,8 @@ var Person = function () {
     bioModifier = rangeRand(0, 100);
     if (bioModifier > 97) {
         this.bio = [].map.call(this.bio, function(e) {
-            return (rangeRand(0, 1) == 0 ? e.toUpperCase() : e.toLowerCase()).join("");
-        });
+            return rangeRand(0, 1) == 0 ? e.toUpperCase() : e.toLowerCase();
+        }).join("");
     }
 };
 
