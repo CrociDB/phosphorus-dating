@@ -51,6 +51,10 @@ var sex_orient = [
     { w: .15, t: "Bisexual" },       // 2
 ];
 
+var texts = {
+    date_conf: "<p>Do you want to match <b>$1</b> and <b>$2</b>?</p><p>After that they will go to a date and then you will get a date report.</p>"
+};
+
 // Util
 
 var gId = function(t) { return document.getElementById(t); };
@@ -351,13 +355,17 @@ var Game = function() {
         var p1 = this.currentPeople[0];
         var p2 = this.currentPeople[1];
         showDialogOk("Do a Match?", 
-                     "Are you sure you want to match <b>" + p1.name + "</b> and <b>" + p2.name + "</b>?", 
-                     this.doMatch.bind(this));
+                     texts.date_conf.replace("$1", p1.name).replace("$2", p2.name),
+                     this.doMatch.bind(this, p1, p2));
     };
 
-    this.doMatch = function (p1, p2) {
-        var m = new Match(this.currentPeople[0], this.currentPeople[1]);
+    this.doMatch = function(p1, p2) {
+        var m = new Match(p1, p2);
         console.log(m);
+    };
+
+    this.removePeople = function(p1, p2) {
+
     }
 }
 
