@@ -4,17 +4,19 @@ var subjects = [
     { name: "Read" },             // 1
     { name: "Soccer" },           // 2
     { name: "Drink" },            // 3
-    { name: "Computer" },         // 4
+    { name: "Technology" },       // 4
     { name: "Fitness" },          // 5
     { name: "Science" },          // 6
+    { name: "Politics" },         // 7
+    { name: "Pets" },             // 8
 ];
 
 var traits = [
     // s: subject, d: direction, t: text
     { s: 0, d: 2, o: 1, t: "One of my main activities: play videogames." },
-    { s: 1, d: 2, o: 1, t: "Comic Books." },
+    { s: 1, d: 2, o: 1, t: "Like Books, comic books and graphic novels." },
     { s: 1, d: 2, o: 1, t: "Books." },
-    { s: 1, d: 2, o: 1, t: "Magazines." },
+    { s: 1, d: 2, o: 1, t: "Love reading." },
     { s: 1, d: 0, o: 1, t: "Books are the old media." },
     { s: 2, d: 2, o: 5, t: "Wanna join me in a soccer game?" },
     { s: 2, d: 0, o: 5, t: "Oh, don't talk to me if you watch soccer." },
@@ -25,16 +27,18 @@ var traits = [
     { s: 3, d: 0, o: 3, t: "No alcohol for me." },
     { s: 4, d: 2, o: 0, t: "I write computer programs." },
     { s: 4, d: 2, o: 0, t: "I speak C++." },
+    { s: 4, d: 2, o: 0, t: "This Internet thing is promising." },
     { s: 5, d: 2, o: 3, t: "Jogging." },
     { s: 5, d: 2, o: 3, t: "Play basketball." },
     { s: 5, d: 0, o: 5, t: "High five sedentary people!" },
     { s: 6, d: 2, o: 1, t: "Hail Carl Sagan!" },
     { s: 6, d: 0, o: 0, t: "God in first place." },
-    // Add about politics
-    // Add about internet promising
-    // Add about dog and cat person
-    // Create logic for removing commas and adding commas instead of period
-    // Add special emo rule
+    { s: 7, d: 0, o: 0, t: "Ultra-conservative." },
+    { s: 7, d: 0, o: 0, t: "I'm a conservative." },
+    { s: 7, d: 2, o: 5, t: "Have you read some Karl Marx?" },
+    { s: 7, d: 2, o: 2, t: "Communism, socialism, and anarchism." },
+    { s: 8, d: 2, o: 3, t: "Totally a cat person." },
+    { s: 8, d: 0, o: 3, t: "Dog person here." },
 ];
 
 var female_names = ["Joanna", "Linda", "Lorenna", "Alyssa", "Anna", "Anne", "Eduarda", "Kat", "Giuliana", "Lais", "Adrianne", "Gal", "Olivia"];
@@ -154,11 +158,25 @@ var Person = function () {
         }
     }, this);
 
+    // Upper/Lower case modifier
     var bioModifier = rangeRand(0, 100);
-    if (bioModifier > 92) {
+    if (bioModifier > 85) {
         this.bio = this.bio.toLowerCase();
-    } else if (bioModifier > 89) {
+    } else if (bioModifier > 80) {
         this.bio = this.bio.toUpperCase();
+    }
+
+    // Ponctuation modifier
+    bioModifier = rangeRand(0, 100);
+    if (bioModifier > 70) {
+        this.bio = this.bio.replace(/,/g, "").replace(/\./g, ",");
+        this.bio = this.bio.substr(0, this.bio.length - 2);
+    }
+
+    // Emo modifier
+    bioModifier = rangeRand(0, 100);
+    if (bioModifier > 97) {
+        this.bio = [].map.call(this.bio, (e) => rangeRand(0, 1) == 0 ? e.toUpperCase() : e.toLowerCase()).join(""); 
     }
 };
 
@@ -280,15 +298,23 @@ var showDialogOk = function(title, section, okCallback) {
 
 var Game = function() {
     this.start = function () {
+        this.opeople = []
         this.people = [];
-        for (var i = 0; i < 10; i++)
+        for (var i = 0; i < 3; i++)
+        {
+            var p = new Person();
+            this.opeople.push(p);
+        }
+
+        for (var i = 0; i < 15; i++)
         {
             var p = new Person();
             this.people.push(p);
         }
+
         this.drawPeople();
 
-        this.currentPeople = [this.people[0], this.people[0]];
+        this.currentPeople = [this.opeople[0], this.people[0]];
         this.renderDetails();
     };
 
@@ -297,15 +323,19 @@ var Game = function() {
         var p2 = gId("peopleList2");
 
         var id = 0;
-        this.people.forEach(function(p) {
+        this.opeople.forEach(function(p) {
             p1.innerHTML += peopleListTemplate(0, id, p.name);
+            id++; 
+        });
+        id = 0;
+        this.people.forEach(function(p) {
             p2.innerHTML += peopleListTemplate(1, id, p.name);
             id++; 
         });
     };
 
     this.clickPerson = function(l, id) {
-        this.currentPeople[l] = this.people[id];
+        this.currentPeople[l] = l == 0 ? this.opeople[id] : this.people[id];
         this.renderDetails(l);
     };
 
@@ -318,6 +348,14 @@ var Game = function() {
     };
 
     this.match = function() {
+        var p1 = this.currentPeople[0];
+        var p2 = this.currentPeople[1];
+        showDialogOk("Do a Match?", 
+                     "Are you sure you want to match <b>" + p1.name + "</b> and <b>" + p2.name + "</b>?", 
+                     this.doMatch.bind(this));
+    };
+
+    this.doMatch = function (p1, p2) {
         var m = new Match(this.currentPeople[0], this.currentPeople[1]);
         console.log(m);
     }

@@ -111,11 +111,12 @@ body {
 
 .people-list {
     display: block;
-    width: 120px;
+    width: 140px;
     height: 250px;
     padding: 0;
     margin: 0;
     background-color: white;
+    overflow-y: auto;
 }
 
 .people-list li {
@@ -145,7 +146,7 @@ body {
 
 .people-detail {
     position: relative;
-    width: 300px;
+    width: 280px;
     height: 230px;
     padding: 10px;
     background-color: white;
