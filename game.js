@@ -259,10 +259,13 @@ function peopleListTemplate(l, id, name) {
 }
 
 function peopleDetail(person) {
-    var t = gId("peopleDetail");
+    if (person === null)
+    {
+        return "";
+    }
 
+    var t = gId("peopleDetail");
     var s = (person.gender == 0 ? "Female" : "Male") + " - " + person.orientation;
-    
     return t.innerHTML.replace("$1", person.name + ", " + person.age)
                       .replace("$2", s).replace("$3", person.bio);
 }
@@ -304,6 +307,8 @@ var showDialogOk = function(title, section, okCallback) {
 // Game
 
 var Game = function() {
+    this.matches = [];
+
     this.start = function () {
         this.opeople = []
         this.people = [];
@@ -328,6 +333,8 @@ var Game = function() {
     this.drawPeople = function() {
         var p1 = gId("peopleList1");
         var p2 = gId("peopleList2");
+
+        p1.innerHTML = p2.innerHTML = "";
 
         var id = 0;
         this.opeople.forEach(function(p) {
@@ -357,19 +364,35 @@ var Game = function() {
     this.match = function() {
         var p1 = this.currentPeople[0];
         var p2 = this.currentPeople[1];
-        showDialogOk("Do a Match?", 
-                     texts.date_conf.replace("$1", p1.name).replace("$2", p2.name),
-                     this.doMatch.bind(this, p1, p2));
+
+        if (p1 === null || p2 === null) {
+            showDialogOk("Oops", "There's no one else to match right now.", function() {});
+        } else {
+            showDialogOk("Do a Match?", 
+                        texts.date_conf.replace("$1", p1.name).replace("$2", p2.name),
+                        this.doMatch.bind(this, p1, p2));
+        }
+
     };
 
     this.doMatch = function(p1, p2) {
+        this.opeople.splice(this.opeople.indexOf(p1), 1);
+        this.people.splice(this.people.indexOf(p2), 1);
+        
+        if (this.opeople.length > 0) {
+            this.currentPeople[0] = this.opeople[0];
+        } else {
+            this.currentPeople[0] = null;
+        }
+        this.currentPeople[1] = this.people[0];
+
+        this.drawPeople();
+        this.renderDetails();
+
         var m = new Match(p1, p2);
+        this.matches.push(m);
         console.log(m);
     };
-
-    this.removePeople = function(p1, p2) {
-
-    }
 }
 
 var game = new Game();
