@@ -309,16 +309,36 @@ var dialog = {
     hide: function () { 
         this.bg.style = "visibility: hidden";
         this.dw.style = "visibility: hidden";
+        this.active = false;
+
+        setTimeout(this.checkQueue.bind(this), 100);
     },
     show: function () {
         this.bg.style = "visibility: visible";
         this.dw.style = "visibility: visible";
+        this.active = true;
     },
     onOk: null,
-    okCancel: null 
+    okCancel: null,
+    checkQueue: function () {
+        if (this.dialogQueue.length > 0) {
+            var d = this.dialogQueue.pop();
+            createDialogOk(d.title, d.section, d.okCallback);
+        }
+    },
+    active: false,
+    dialogQueue: [] 
 };
 
 var showDialogOk = function(title, section, okCallback) {
+    if (dialog.active) {
+        dialog.dialogQueue.push({ title: title, section: section, okCallback: okCallback });
+    } else {
+        createDialogOk(title, section, okCallback);
+    }
+};
+
+var createDialogOk = function(title, section, okCallback) {
     dialog.title.innerHTML = title;
     dialog.section.innerHTML = section;
     dialog.onOk = function () {
@@ -330,6 +350,8 @@ var showDialogOk = function(title, section, okCallback) {
     };
     dialog.show();
 };
+
+
 
 // Game
 
