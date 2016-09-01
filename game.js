@@ -52,7 +52,8 @@ var sex_orient = [
 ];
 
 var texts = {
-    date_conf: "<p>Do you want to match <b>$1</b> and <b>$2</b>?</p><p>After that they will go to a date and then you will get a date report.</p>"
+    date_conf: "<p>Do you want to match <b>$1</b> and <b>$2</b>?</p><p>After that they will go to a date and then you will get a date report.</p>",
+    date_end: "<p>Seems like the date between <b>$1</b> and <b>$2</b> finished. More info later.</p>"
 };
 
 // Util
@@ -254,25 +255,38 @@ var Match = function(p1, p2) {
 
     this.createProgressItem = function() {
         var ml = gId("matchItemTemplate");
-        var dl = gId("dateList");
+        this.dl = gId("dateList");
 
         var names = this.p1.name + " & " + this.p2.name;
         var c = ml.innerHTML.replace("$1", names).replace("$2", this.id);
 
-        var obj = document.createElement("li");
-        obj.innerHTML = c;
-        obj.id = "matchLi-" + this.id;
-        dl.appendChild(obj);
+        this.li = document.createElement("li");
+        this.li.innerHTML = c;
+        this.dl.appendChild(this.li);
 
         this.progress = gId("matchProgress-" + this.id);
-        this.li = gId("matchLi-" + this.id);
 
         this.interval = setInterval(this.updateBar.bind(this), 10);
     };
 
-    this.updateBar = function () {
+    this.updateBar = function() {
         this.value += 0.05;
         this.progress.value = this.value;
+
+        if (this.value >= 100) {
+            this.endOfMatch();
+        }
+    };
+
+    this.endOfMatch = function() {
+        clearInterval(this.interval);
+
+        var mtext = texts.date_end.replace("$1", this.p1.name).replace("$2", this.p2.name);
+        showDialogOk("Date finished", mtext, this.killCurrentMatch.bind(this));
+    };
+
+    this.killCurrentMatch = function() {
+        this.dl.removeChild(this.li);
     };
 
     this.calculate();
