@@ -187,9 +187,12 @@ var Person = function () {
 };
 
 // Matches
+var match_ids = 0;
 var Match = function(p1, p2) {
+    this.id = match_ids++;
     this.p1 = p1;
     this.p2 = p2;
+    this.value = 0;
 
     this.calculate = function() {
         this.sex = 0;
@@ -247,9 +250,33 @@ var Match = function(p1, p2) {
         this.neutral = tr1f.length + tr2f.length;
 
         this.subjects = this.p1.traits.concat(this.p2.traits).unique().map(function (t) { return subjects[t.s]; });
-    }
+    };
+
+    this.createProgressItem = function() {
+        var ml = gId("matchItemTemplate");
+        var dl = gId("dateList");
+
+        var names = this.p1.name + " & " + this.p2.name;
+        var c = ml.innerHTML.replace("$1", names).replace("$2", this.id);
+
+        var obj = document.createElement("li");
+        obj.innerHTML = c;
+        obj.id = "matchLi-" + this.id;
+        dl.appendChild(obj);
+
+        this.progress = gId("matchProgress-" + this.id);
+        this.li = gId("matchLi-" + this.id);
+
+        this.interval = setInterval(this.updateBar.bind(this), 10);
+    };
+
+    this.updateBar = function () {
+        this.value += 0.05;
+        this.progress.value = this.value;
+    };
 
     this.calculate();
+    this.createProgressItem();
 };
 
 // Templates
