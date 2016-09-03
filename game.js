@@ -278,9 +278,9 @@ var Match = function(p1, p2) {
         this.category = this.getCategory();
 
         // Step speed
-        var seconds = (this.subjects.length * 1.5) + (this.positive * 3);
+        var seconds = (this.subjects.length * 2) + (this.positive * 4);
         if (this.sex < 0) {
-            seconds = seconds / 2;
+            seconds = seconds / 1.8;
         }
         this.step = 100 / (seconds * 100);
         console.log(seconds, this.step);
@@ -495,7 +495,7 @@ var Game = function() {
 
     this.randomPeople = function() {
         this.people = [];
-        for (var i = 0; i < 15; i++)
+        for (var i = 0; i < 20; i++)
         {
             var p = new Person();
             this.people.push(p);
@@ -507,7 +507,7 @@ var Game = function() {
     this.updateDateData = function() {
         var rating = 'N/A';
         if (this.totalMatches > 0) {
-            rating = (this.totalGoodMatches / this.totalMatches) * 100;
+            rating = Math.floor(this.totalGoodMatches / this.totalMatches * 100);
             rating = '' + rating + '%';
         }
 
@@ -515,7 +515,7 @@ var Game = function() {
         this.dateLeft.innerHTML = this.opeople.length;
         this.dateCouples.innerHTML = this.goodWeekMatches + '/' + this.weekMatches;
         this.dateRating.innerHTML = rating;
-        this.dateScore.innerHTML = this.totalScore;
+        this.dateScore.innerHTML = this.totalScore < 0 ? "Too low" : this.totalScore;
     };
 
     this.drawPeople = function() {
