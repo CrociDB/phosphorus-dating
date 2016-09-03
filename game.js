@@ -427,10 +427,10 @@ var showDialogOk = function(title, section, okCallback, type) {
 };
 
 var createDialogOk = function(title, section, okCallback, type) {
+    dialog.removeResults();
+
     if (type && type == "results") {
         dialog.addResults();
-    } else {
-        dialog.removeResults();
     }
 
     dialog.title.innerHTML = title;
@@ -447,15 +447,11 @@ var createDialogOk = function(title, section, okCallback, type) {
     dialog.show();
 };
 
-
-
 // Game
 
 var Game = function() {
     this.matches = [];
     this.week = 0;
-    this.goodWeekMatches = 0;
-    this.weekMatches = 0;
 
     this.totalMatches = 0;
     this.totalGoodMatches = 0;
@@ -480,6 +476,7 @@ var Game = function() {
     this.startWeek = function() {
         this.week++;
         this.goodWeekMatches = 0;
+        this.weekMatches = 0;
 
         this.startWeekPeople();
         this.randomPeople();
@@ -487,6 +484,8 @@ var Game = function() {
         this.drawPeople();
         this.renderDetails();
         this.updateDateData();
+
+        showDialogOk("Week", "Week <b>" + this.week + "</b> just started. You have <b>" + this.opeople.length + "</b> people to match.");
     };
 
     this.startWeekPeople = function() {
@@ -622,6 +621,16 @@ var Game = function() {
         this.totalScore += m.total;
 
         this.updateDateData();
+
+        console.log(this.opeople, this.matches);
+
+        if (this.opeople.length == 0 && this.matches == 0) {
+            setTimeout(this.finishWeek.bind(this), 400);
+        }
+    };
+
+    this.finishWeek = function () {
+        this.startWeek();
     };
 }
 
