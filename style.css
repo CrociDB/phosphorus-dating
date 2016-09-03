@@ -57,6 +57,9 @@ body {
     display: inline-block;
     padding: 30px;
     font-size: 16px;
+    font-weight: bold;
+
+    background-color: #C0CAC0;
 }
 
 .window-style {
@@ -254,21 +257,24 @@ body {
 }
 
 .game-info {
+    padding-top: 0;
     margin-left: 10px;
 }
 
 .game-info h1 {
     font-size: 15px;
-    margin-bottom: 4px;
+    margin-top: 0;
+    margin-bottom: 5px;
 }
 
 .game-info p {
     font-size: 15px;
     margin: 0;    
+    margin-bottom: 10px;
 }
 
 .game-info-first {
-    width: 300px;
+    width: 250px;
 }
 
 /* Ids */
@@ -289,7 +295,7 @@ body {
 
 #gameDiv {
     width: 932px;
-    height: 500px;
+    height: 485px;
 }
 
 #taskbar {
