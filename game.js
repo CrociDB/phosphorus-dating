@@ -229,9 +229,10 @@ var Match = function(p1, p2) {
         var tts = function(t) { return t.s; };
         var tr1sub = this.p1.traits.map(tts);
         var tr2sub = this.p2.traits.map(tts);
-        var intersection = this.p1.traits.filter(function(t) { return tr2sub.indexOf(t.s) >= 0; }).concat(
-                           this.p2.traits.filter(function(t) { return tr2sub.indexOf(t.s) >= 0; }));
 
+        var intersection = this.p1.traits.filter(function(t) { return tr2sub.indexOf(t.s) >= 0; }).concat(
+                           this.p2.traits.filter(function(t) { return tr1sub.indexOf(t.s) >= 0; }));
+        
         var tr1f = this.p1.traits.filter(function (t) { return intersection.map(tts).indexOf(t.s) == -1; });
         var tr2f = this.p2.traits.filter(function (t) { return intersection.map(tts).indexOf(t.s) == -1; });
 
