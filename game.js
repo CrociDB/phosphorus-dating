@@ -53,7 +53,9 @@ var sex_orient = [
 
 var texts = {
     date_conf: "<p>Do you want to match <b>$1</b> and <b>$2</b>?</p><p>After that they will go to a date and then you will get a date report.</p>",
-    date_end: "<p>Seems like the date between <b>$1</b> and <b>$2</b> finished. Date result: <span class=\"$3\">$4</span></p>"
+    date_end: "<p>Seems like the date between <b>$1</b> and <b>$2</b> finished. Date result: <span class=\"$3\">$4</span></p>",
+    bonus_conf: "<p>Are you sure you want to swap the available people? You have <b>$1</b> bonus left.</p>",
+    bonus_not: "<p>You can't do that because you don't have any bonus left.</p>"
 };
 
 var match_category = [
@@ -459,12 +461,15 @@ var Game = function() {
 
     this.currentPeople = [0, 0];
 
+    this.bonus = 3;
+
     // DOM elements
     this.dateWeek = gId("dateWeek");
     this.dateLeft = gId("dateLeft");
     this.dateCouples = gId("dateCouples");
     this.dateRating = gId("dateRating");
     this.dateScore = gId("dateScore");
+    this.dateBonus = gId("dateBonus");
 
     this.start = function () {    
         this.startWeek();
@@ -516,6 +521,7 @@ var Game = function() {
         this.dateCouples.innerHTML = this.goodWeekMatches + '/' + this.weekMatches;
         this.dateRating.innerHTML = rating;
         this.dateScore.innerHTML = this.totalScore < 0 ? "Too low" : this.totalScore;
+        this.dateBonus.innerHTML = this.bonus;
     };
 
     this.drawPeople = function() {
@@ -547,6 +553,23 @@ var Game = function() {
 
         p1.innerHTML = peopleDetail(this.currentPeople[0]);
         p2.innerHTML = peopleDetail(this.currentPeople[1]);
+    };
+
+    this.useBonus = function() {
+        this.bonus--;
+        this.randomPeople();
+
+        this.updateDateData();
+        this.drawPeople();
+        this.renderDetails();
+    };
+
+    this.more = function() {
+        if (this.bonus > 0) {
+            showDialogOk("Bonus", texts.bonus_conf.replace("$1", this.bonus), this.useBonus.bind(this));
+        } else {
+            showDialogOk("Bonus", texts.bonus_not, function() {});
+        }
     };
 
     this.match = function() {
