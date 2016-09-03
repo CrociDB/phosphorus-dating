@@ -349,6 +349,10 @@ var Match = function(p1, p2) {
 
     this.killCurrentMatch = function() {
         this.dl.removeChild(this.li);
+        if (this.finished) {
+            this.finished(this);
+            this.finished = null;
+        }
     };
 
     this.calculate();
@@ -445,26 +449,73 @@ var createDialogOk = function(title, section, okCallback, type) {
 
 var Game = function() {
     this.matches = [];
+    this.week = 0;
+    this.goodWeekMatches = 0;
+    this.weekMatches = 0;
 
-    this.start = function () {
-        this.opeople = []
-        this.people = [];
+    this.totalMatches = 0;
+    this.totalGoodMatches = 0;
+    this.totalScore = 0;
+
+    this.currentPeople = [0, 0];
+
+    // DOM elements
+    this.dateWeek = gId("dateWeek");
+    this.dateLeft = gId("dateLeft");
+    this.dateCouples = gId("dateCouples");
+    this.dateRating = gId("dateRating");
+    this.dateScore = gId("dateScore");
+
+    this.start = function () {    
+        this.startWeek();
+    };
+
+    this.startWeek = function() {
+        this.week++;
+        this.goodWeekMatches = 0;
+
+        this.startWeekPeople();
+        this.randomPeople();
+
+        this.drawPeople();
+        this.renderDetails();
+        this.updateDateData();
+    };
+
+    this.startWeekPeople = function() {
+        this.opeople = [];
         for (var i = 0; i < 3; i++)
         {
             var p = new Person();
             this.opeople.push(p);
         }
 
+        this.currentPeople[0] = this.opeople[0];
+    };
+
+    this.randomPeople = function() {
+        this.people = [];
         for (var i = 0; i < 15; i++)
         {
             var p = new Person();
             this.people.push(p);
         }
 
-        this.drawPeople();
+        this.currentPeople[1] = this.people[0];
+    };
 
-        this.currentPeople = [this.opeople[0], this.people[0]];
-        this.renderDetails();
+    this.updateDateData = function() {
+        var rating = 'N/A';
+        if (this.totalMatches > 0) {
+            rating = (this.totalGoodMatches / this.totalMatches) * 100;
+            rating = '' + rating + '%';
+        }
+
+        this.dateWeek.innerHTML = this.week;
+        this.dateLeft.innerHTML = this.opeople.length;
+        this.dateCouples.innerHTML = this.goodWeekMatches + '/' + this.weekMatches;
+        this.dateRating.innerHTML = rating;
+        this.dateScore.innerHTML = this.totalScore;
     };
 
     this.drawPeople = function() {
@@ -527,8 +578,25 @@ var Game = function() {
         this.renderDetails();
 
         var m = new Match(p1, p2);
+        m.finished = this.finishedMatch.bind(this);
         this.matches.push(m);
         console.log(m);
+    };
+
+    this.finishedMatch = function(m) {
+        this.matches.splice(this.matches.indexOf(m), 1);
+
+        if (m.total > 0) {
+            this.totalGoodMatches++;
+            this.goodWeekMatches++;
+        }
+
+        this.totalMatches++;
+        this.weekMatches++;
+
+        this.totalScore += m.total;
+
+        this.updateDateData();
     };
 }
 

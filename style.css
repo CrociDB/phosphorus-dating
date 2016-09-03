@@ -253,6 +253,26 @@ body {
     margin-right: 10px;
 }
 
+.game-info {
+    margin-left: 10px;
+}
+
+.game-info h1 {
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.game-info p {
+    font-size: 15px;
+    margin: 0;    
+}
+
+.game-info-first {
+    width: 300px;
+}
+
+/* Ids */
+
 #dateArea {
     overflow: auto;
 }
