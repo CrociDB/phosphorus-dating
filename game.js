@@ -437,7 +437,9 @@ var createDialogOk = function(title, section, okCallback, type) {
     dialog.section.innerHTML = section;
     dialog.onOk = function () {
         dialog.hide();
-        okCallback();
+        if (okCallback) {
+            okCallback();
+        }
     };
     dialog.onCancel = function () {
         dialog.hide();
@@ -568,7 +570,7 @@ var Game = function() {
         if (this.bonus > 0) {
             showDialogOk("Bonus", texts.bonus_conf.replace("$1", this.bonus), this.useBonus.bind(this));
         } else {
-            showDialogOk("Bonus", texts.bonus_not, function() {});
+            showDialogOk("Bonus", texts.bonus_not);
         }
     };
 
@@ -577,7 +579,7 @@ var Game = function() {
         var p2 = this.currentPeople[1];
 
         if (p1 === null || p2 === null) {
-            showDialogOk("Oops", "There's no one else to match right now.", function() {});
+            showDialogOk("Oops", "There's no one else to match right now.");
         } else {
             showDialogOk("Do a Match?", 
                         texts.date_conf.replace("$1", p1.name).replace("$2", p2.name),
