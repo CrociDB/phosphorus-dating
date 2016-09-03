@@ -102,6 +102,31 @@ body {
     margin: auto;
 }
 
+.results {
+    top: 30%;
+    bottom: 30%;
+    left: 30%;
+    right: 30%;
+    
+    width: 400px;
+    height: 300px;
+}
+
+.results-box {
+    padding: 5px;
+    background-color: #FFFFFF;
+    height: 150px;
+    overflow-y: auto;
+}
+
+.results-good {
+    color: green;
+}
+
+.results-bad {
+    color: darkred;
+}
+
 .button-container {
     position: absolute;
     right: 0;

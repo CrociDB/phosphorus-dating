@@ -3,7 +3,7 @@ var subjects = [
     { name: "Video Game" },       // 0
     { name: "Read" },             // 1
     { name: "Soccer" },           // 2
-    { name: "Drink" },            // 3
+    { name: "Drinks" },           // 3
     { name: "Technology" },       // 4
     { name: "Fitness" },          // 5
     { name: "Science" },          // 6
@@ -53,8 +53,19 @@ var sex_orient = [
 
 var texts = {
     date_conf: "<p>Do you want to match <b>$1</b> and <b>$2</b>?</p><p>After that they will go to a date and then you will get a date report.</p>",
-    date_end: "<p>Seems like the date between <b>$1</b> and <b>$2</b> finished. More info later.</p>"
+    date_end: "<p>Seems like the date between <b>$1</b> and <b>$2</b> finished. Date result: <span class=\"$3\">$4</span></p>"
 };
+
+var match_category = [
+    { score: 200, title: "Marriage", text: "Wow! They really got along very well. Don't be surprise if you get a marriage invite soon." },
+    { score: 150, title: "Date", text: "Amazing date! After that, they went to a motel, had a lot of fun and already set another date for the next week." },
+    { score: 100, title: "Fun", text: "They're kind of addicted to each other. Other dates are coming, maybe travel together?" },
+    { score: 50, title: "Casual Sex", text: "They had a good sex after the date, but they don't seem like they will go out together any more. Call it a good time." },
+    { score: 0, title: "Nice Buddies", text: "They enjoyed conversation together, but doesn't seem like they're going to do anything else. Maybe good friends." },
+    { score: -100, title: "Strangers", text: "Weird \"date\" (if one can call that way). Unconfortable talking with a total stranger. That shall not happen ever again." },
+    { score: -170, title: "Awkward", text: "The most awkward event in their lives. They're going to forget that forever." },
+    { score: -250, title: "Fight", text: "Oh my Dog! There was a fight over there! They don't even want to see each other's face in the streets! That's awful." }
+];
 
 // Util
 
@@ -252,6 +263,36 @@ var Match = function(p1, p2) {
         this.neutral = tr1f.length + tr2f.length;
 
         this.subjects = this.p1.traits.concat(this.p2.traits).unique().map(function (t) { return subjects[t.s]; });
+
+        // Traits and Sex info
+        this.total = this.sex + (this.negative * -20) + (this.positive * 20);
+        var neutral_score = (this.neutral * 10);
+        this.total += rangeRand((neutral_score / -2), (neutral_score / 2));
+
+        // Age info
+        var ageabs = Math.abs(this.p1.age - this.p2.age);
+        this.age_penalizing = Math.floor(ageabs / 10) * 7;
+        this.total -= rangeRand(0, this.age_penalizing);
+
+        // Category
+        this.category = this.getCategory();
+
+        // Step speed
+        var seconds = (this.subjects.length * 1.5) + (this.positive * 3);
+        if (this.sex < 0) {
+            seconds = seconds / 2;
+        }
+        this.step = 100 / (seconds * 100);
+        console.log(seconds, this.step);
+    };
+
+    this.getCategory = function () {
+        var i;
+        for (i in match_category) {
+            if (this.total >= match_category[i].score) {
+                return i;
+            }
+        }
     };
 
     this.createProgressItem = function() {
@@ -271,7 +312,7 @@ var Match = function(p1, p2) {
     };
 
     this.updateBar = function() {
-        this.value += 0.05;
+        this.value += this.step;
         this.progress.value = this.value;
 
         if (this.value >= 100) {
@@ -282,8 +323,28 @@ var Match = function(p1, p2) {
     this.endOfMatch = function() {
         clearInterval(this.interval);
 
-        var mtext = texts.date_end.replace("$1", this.p1.name).replace("$2", this.p2.name);
-        showDialogOk("Date finished", mtext, this.killCurrentMatch.bind(this));
+        var cat = match_category[this.category];
+        var cls = this.total > 0 ? "results-good" : "results-bad";
+
+        var mtext = texts.date_end.
+                        replace("$1", this.p1.name).
+                        replace("$2", this.p2.name).
+                        replace("$3", cls).
+                        replace("$4", cat.title);
+
+        mtext += '<div class="inner-object results-box"><p>' + cat.text + '</p>';
+        mtext += '<p>They talked about:</p>'
+        mtext += '<ul>';
+
+        var divider = this.total > 0 ? 1 : 2;
+
+        for (var i = 0; i < this.subjects.length / divider; i++) {
+            mtext += '<li>' + this.subjects[i].name + '</li>';
+        }
+
+        mtext += '</ul>'
+        mtext += '</div>';
+        showDialogOk("Date finished: " + cat.title, mtext, this.killCurrentMatch.bind(this), "results");
     };
 
     this.killCurrentMatch = function() {
@@ -321,39 +382,51 @@ var dialog = {
     section: gId("dialogSection"),
     ok: gId("dialogOk"),
     cancel: gId("dialogCancel"),
-    hide: function () { 
+    hide: function() { 
         this.bg.style = "visibility: hidden";
         this.dw.style = "visibility: hidden";
         this.active = false;
 
         setTimeout(this.checkQueue.bind(this), 100);
     },
-    show: function () {
+    show: function() {
         this.bg.style = "visibility: visible";
         this.dw.style = "visibility: visible";
         this.active = true;
     },
     onOk: null,
     okCancel: null,
-    checkQueue: function () {
+    checkQueue: function() {
         if (this.dialogQueue.length > 0) {
             var d = this.dialogQueue.pop();
-            createDialogOk(d.title, d.section, d.okCallback);
+            createDialogOk(d.title, d.section, d.okCallback, d.type);
         }
+    },
+    addResults: function() {
+        this.dw.className += " results";
+    },
+    removeResults: function() {
+        this.dw.className = this.dw.className.replace(/ results/, '');
     },
     active: false,
     dialogQueue: [] 
 };
 
-var showDialogOk = function(title, section, okCallback) {
+var showDialogOk = function(title, section, okCallback, type) {
     if (dialog.active) {
-        dialog.dialogQueue.push({ title: title, section: section, okCallback: okCallback });
+        dialog.dialogQueue.push({ title: title, section: section, okCallback: okCallback, type: type });
     } else {
-        createDialogOk(title, section, okCallback);
+        createDialogOk(title, section, okCallback, type);
     }
 };
 
-var createDialogOk = function(title, section, okCallback) {
+var createDialogOk = function(title, section, okCallback, type) {
+    if (type && type == "results") {
+        dialog.addResults();
+    } else {
+        dialog.removeResults();
+    }
+
     dialog.title.innerHTML = title;
     dialog.section.innerHTML = section;
     dialog.onOk = function () {
