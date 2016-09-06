@@ -56,7 +56,8 @@ var texts = {
     date_end: "<p>Seems like the date between <b>$1</b> and <b>$2</b> finished. Date result: <span class=\"$3\">$4</span></p>",
     bonus_conf: "<p>Are you sure you want to swap the available people? You have <b>$1</b> bonus left.</p>",
     bonus_not: "<p>You can't do that because you don't have any bonus left.</p>",
-    week_started: "<p>Week <b>$1</b> just started. You need to match <b>$2</b> people in the left list to go to the next one.</p>"
+    week_started: "<p>Week <b>$1</b> just started. You need to match <b>$2</b> people in the left list to go to the next one.</p>",
+    welcome_help: "<div class=\"inner-object results-box\"><p>Phosphorus Dating is a very modern dating website, our matching algorithm was considered one of the most advanced ever created. We achieved more than <b>95%</b> of successful couples. But recently something happened and for some reason the accuracy is below <b>25%</b>, this is why we activated the manual mode and you're here.</p><p>You have <b>7</b> weeks to match couples based on their <b>gender</b>, <b>sexual orientation</b>, <b>age</b> and <b>interests</b>. Every week you will have to find a good couple for the people in the left list of the Phosphorus Dating program. Pick the right person on the right and match the couple. If you can't find a good match, you can try to ask more people, but be careful, it's limited.</p><p>When you match a couple, they will go out on a date and you can keep up with the progress on the lower left date list on the program. After that finishes you'll get a report.</p></div>"
 };
 
 var match_category = [
@@ -542,8 +543,15 @@ var Game = function() {
     this.dateScore = gId("dateScore");
     this.dateBonus = gId("dateBonus");
 
-    this.start = function () {    
+    this.start = function () {
+        var txt = "<p>Welcome to <b>Phosphorus Dating</b>. You are logged in as <span style=\"color: green\">cecilia.dent</span>.</p>";
+        txt += texts.welcome_help;
+        showDialogOk("Welcome", txt);
         this.startWeek();
+    };
+
+    this.help = function() {
+        showDialogOk("Help", texts.welcome_help);
     };
 
     this.startWeek = function() {
