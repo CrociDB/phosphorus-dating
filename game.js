@@ -446,7 +446,7 @@ var createDialogOk = function(title, section, okCallback, type) {
 };
 
 // Console
-var Console = function() {
+var GameConsole = function() {
     this.consoleDiv = gId("consoleDiv");
     this.consolePre = document.querySelector("#consoleDiv pre");
 
@@ -460,7 +460,6 @@ var Console = function() {
 
         return;
     };
-    
 
     this.init = function() {
         var date = new Date();
@@ -702,8 +701,8 @@ var Game = function() {
 }
 
 var game = new Game();
-var console = new Console();
-console.remove();
+var gameConsole = new GameConsole();
+gameConsole.remove();
 
 (function() {
     game.start();
