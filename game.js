@@ -263,7 +263,7 @@ var Match = function(p1, p2) {
 
         this.neutral = tr1f.length + tr2f.length;
 
-        this.subjects = this.p1.traits.concat(this.p2.traits).unique().map(function (t) { return subjects[t.s]; });
+        this.subjects = this.p1.traits.concat(this.p2.traits).map(function (t) { return subjects[t.s]; }).unique();
 
         // Traits and Sex info
         this.total = this.sex + (this.negative * -20) + (this.positive * 20);
