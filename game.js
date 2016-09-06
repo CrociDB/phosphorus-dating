@@ -493,16 +493,22 @@ var Console = function() {
             if (this.tokens[this.currentToken].indexOf("%k") > -1) {
                 this.key = true;
             } else if (this.tokens[this.currentToken].indexOf("%l")  > -1) {
-                setTimeout(this.nextToken.bind(this), 2000);
+                this.timeout = setTimeout(this.nextToken.bind(this), 2000);
             } else if (this.tokens[this.currentToken].indexOf("%s")  > -1) {
-                setTimeout(this.nextToken.bind(this), 700);
+                this.timeout = setTimeout(this.nextToken.bind(this), 700);
             }
             
             this.tokens[this.currentToken] = this.tokens[this.currentToken].replace(/%[a-z]/g, "");
         } else {
-            this.consoleDiv.removeChild(this.consolePre);
-            this.consoleDiv.className += "hidden";
+            this.remove();
         }
+    };
+
+    this.remove = function() {
+        this.consoleDiv.removeChild(this.consolePre);
+        this.consoleDiv.className += "hidden";
+        document.onkeypress = null;
+        clearInterval(this.timeout);
     };
 
     this.init();
@@ -697,6 +703,7 @@ var Game = function() {
 
 var game = new Game();
 var console = new Console();
+console.remove();
 
 (function() {
     game.start();
