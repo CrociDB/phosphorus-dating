@@ -274,7 +274,16 @@ body {
 }
 
 .game-info-first {
-    width: 250px;
+    margin-right: 0;
+    border-right: #282626 solid 1px;
+    width: 230px;
+    height: 150px;
+}
+
+.game-info-last {
+    border-left: #DAF0F0 solid 1px;
+    padding-left: 10px;
+    height: 150px;
 }
 
 .console {
