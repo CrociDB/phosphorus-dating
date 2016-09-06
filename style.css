@@ -51,6 +51,8 @@ body {
 
 .inline-button {
     display: inline;
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 .big-button {
@@ -93,16 +95,22 @@ body {
 }
 
 .dialog {
+    display: inline-block;
     position: absolute;
-    top: 30%;
-    bottom: 30%;
-    left: 30%;
-    right: 30%;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
     
-    width: 340px;
-    height: 150px;
+    width: 400px;
+}
 
-    margin: auto;
+.dialog section {
+    display: inline-block;
+    position: relative;
+    margin-bottom: 30px;
 }
 
 .results {
@@ -117,6 +125,7 @@ body {
 
 .results-box {
     padding: 5px;
+    margin-bottom: 15px;
     background-color: #FFFFFF;
     height: 150px;
     overflow-y: auto;
@@ -132,10 +141,12 @@ body {
 
 .button-container {
     position: absolute;
+    left: 0;
     right: 0;
     bottom: 0;
     margin-bottom: 20px;
-    margin-right: 20px;
+    margin-right: 0;
+    margin-left: 0;
     text-align: center;
 }
 
@@ -306,10 +317,6 @@ body {
 }
 
 /* Ids */
-
-#dateArea {
-    overflow: auto;
-}
 
 #dateList {
     width: 250px;

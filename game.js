@@ -56,7 +56,7 @@ var texts = {
     date_end: "<p>Seems like the date between <b>$1</b> and <b>$2</b> finished. Date result: <span class=\"$3\">$4</span></p>",
     bonus_conf: "<p>Are you sure you want to swap the available people? You have <b>$1</b> bonus left.</p>",
     bonus_not: "<p>You can't do that because you don't have any bonus left.</p>",
-    week_started: "Week <b>$1</b> just started. You need to match <b>$2</b> people in the left list to go to the next one."
+    week_started: "<p>Week <b>$1</b> just started. You need to match <b>$2</b> people in the left list to go to the next one.</p>"
 };
 
 var match_category = [
@@ -346,7 +346,7 @@ var Match = function(p1, p2) {
 
         mtext += '</ul>'
         mtext += '</div>';
-        showDialogOk("Date finished: " + cat.title, mtext, this.killCurrentMatch.bind(this), "results");
+        showDialogOk("Date finished: " + cat.title, mtext, this.killCurrentMatch.bind(this));
     };
 
     this.killCurrentMatch = function() {
@@ -404,7 +404,7 @@ var dialog = {
     checkQueue: function() {
         if (this.dialogQueue.length > 0) {
             var d = this.dialogQueue.pop();
-            createDialogOk(d.title, d.section, d.okCallback, d.type);
+            createDialogOk(d.title, d.section, d.okCallback, d.cancel);
         }
     },
     addResults: function() {
@@ -413,23 +413,29 @@ var dialog = {
     removeResults: function() {
         this.dw.className = this.dw.className.replace(/ results/, '');
     },
+    showCancel: function() {
+        this.cancel.className = this.cancel.className.replace(/ hidden/g, '');
+    },
+    hideCancel: function() {
+        this.cancel.className += " hidden";
+    },
     active: false,
     dialogQueue: [] 
 };
 
-var showDialogOk = function(title, section, okCallback, type) {
+var showDialogOk = function(title, section, okCallback, cancel) {
     if (dialog.active) {
-        dialog.dialogQueue.push({ title: title, section: section, okCallback: okCallback, type: type });
+        dialog.dialogQueue.push({ title: title, section: section, okCallback: okCallback, cancel: cancel });
     } else {
-        createDialogOk(title, section, okCallback, type);
+        createDialogOk(title, section, okCallback, cancel);
     }
 };
 
-var createDialogOk = function(title, section, okCallback, type) {
-    dialog.removeResults();
+var createDialogOk = function(title, section, okCallback, cancel) {
+    dialog.hideCancel();
 
-    if (type && type == "results") {
-        dialog.addResults();
+    if (cancel) {
+        dialog.showCancel();
     }
 
     dialog.title.innerHTML = title;
@@ -636,7 +642,7 @@ var Game = function() {
 
     this.more = function() {
         if (this.bonus > 0) {
-            showDialogOk("Bonus", texts.bonus_conf.replace("$1", this.bonus), this.useBonus.bind(this));
+            showDialogOk("Bonus", texts.bonus_conf.replace("$1", this.bonus), this.useBonus.bind(this), true);
         } else {
             showDialogOk("Bonus", texts.bonus_not);
         }
@@ -651,7 +657,7 @@ var Game = function() {
         } else {
             showDialogOk("Do a Match?", 
                         texts.date_conf.replace("$1", p1.name).replace("$2", p2.name),
-                        this.doMatch.bind(this, p1, p2));
+                        this.doMatch.bind(this, p1, p2), true);
         }
 
     };
