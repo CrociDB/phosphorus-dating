@@ -456,6 +456,7 @@ var createDialogOk = function(title, section, okCallback, cancel) {
 // Console
 var GameConsole = function() {
     this.consoleDiv = gId("consoleDiv");
+    this.consoleFix = document.querySelector("#consoleDiv .console-fix");
     this.consolePre = document.querySelector("#consoleDiv pre");
 
     this.currentToken = 0;
@@ -494,6 +495,8 @@ var GameConsole = function() {
         this.consolePre.innerHTML = this.consolePre.innerHTML.substr(0, this.consolePre.innerHTML.length - 1);
         this.consolePre.innerHTML += this.tokens[this.currentToken];
         this.consolePre.innerHTML += "_";
+        this.consoleFix.scrollTop = this.consoleFix.scrollHeight; 
+        
         this.currentToken++;
 
         if (this.currentToken < this.tokens.length) {
@@ -512,7 +515,7 @@ var GameConsole = function() {
     };
 
     this.remove = function() {
-        this.consoleDiv.removeChild(this.consolePre);
+        this.consoleDiv.removeChild(this.consoleFix);
         this.consoleDiv.className += "hidden";
         document.onkeypress = null;
         clearInterval(this.timeout);
@@ -748,7 +751,7 @@ var Game = function() {
 
 var game = new Game();
 var gameConsole = new GameConsole();
-gameConsole.remove();
+//gameConsole.remove();
 
 (function() {
     game.start();

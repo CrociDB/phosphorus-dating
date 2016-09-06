@@ -66,9 +66,9 @@
             </div>
         </div>
 
-        <div id="consoleDiv" class="console">
+        <div id="consoleDiv" class="console"><div class="console-fix">
             <pre class="hidden">
-<span style="color:green">
+% ./goback-machine<span style="color:green">
   ____      ______         ____             __      __  ___           __    _               ____
  / / /     / ____/___     / __ )____ ______/ /__   /  |/  /___ ______/ /_  (_)___  ___     / / /
 / / /     / / __/ __ \   / __  / __ `/ ___/ //_/  / /|_/ / __ `/ ___/ __ \/ / __ \/ _ \   / / / 
@@ -82,12 +82,12 @@ PRESS ANY KEY TO PROCEED %c%k
 
 > CURRENT DATE: $m/$y
 > TARGET DATE: $m/1996
-%c%s
 
+> GOING BACK%c%l
+
+% ./phosphorus-dating %c%s
 BOOTING SYSTEM...
-%c%l
-
-<span style="color:red">
+%c%l<span style="color:red">
    __ ______ _                     _                           ______      _   ^              __   
   / / | ___ \ |                   | |                          |  _  \    | | / \             \ \  
  | |  | |_/ / |__   ___  ___ _ __ | |__   ___  _ __ _   _ ___  | | | |__ _| |_\<span style="color:yellow">^</span>/_ __   __ _   | | 
@@ -99,7 +99,6 @@ BOOTING SYSTEM...
 </span>
 > INITIALIZING PHOSPHORUS DATING KERNEL...
 %c%l
-
 PRESS ANY KEY TO LOG IN %c%k
 
 > TRYING TO LOGIN AS <span style="color:green">CECILIA.DENT</span> %c%l
@@ -107,9 +106,11 @@ PRESS ANY KEY TO LOG IN %c%k
 > WELCOME TO PHOSPHORUS DATING TERMINAL, <span style="color:green">CECILIA.DENT</span> %c%s
 
 > LOADING USER INTERFACE... %c%l
-... %c%l
+%c%l
+%c%s
+%c%s
 </pre>
-        </div>
+        </div></div>
 
         <!-- Templates -->
 
