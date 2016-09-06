@@ -277,6 +277,25 @@ body {
     width: 250px;
 }
 
+.console {
+    position: absolute;
+    padding: 10px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    font-size: 16px;
+    
+    background-color: #000000;
+}
+
+.console pre {
+    color: #AEAEAE;
+    font-family: Courier New, Courier, monospace;
+    font-weight: bold;
+}
+
 /* Ids */
 
 #dateArea {

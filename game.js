@@ -70,7 +70,6 @@ var match_category = [
 ];
 
 // Util
-
 var gId = function(t) { return document.getElementById(t); };
 
 Array.prototype.rand = function() {
@@ -380,7 +379,6 @@ function peopleDetail(person) {
 }
 
 // Dialog System
-
 var dialog = { 
     bg: gId("dialogDiv"), 
     dw: gId("dialogWindow"),
@@ -447,8 +445,71 @@ var createDialogOk = function(title, section, okCallback, type) {
     dialog.show();
 };
 
-// Game
+// Console
+var Console = function() {
+    this.consoleDiv = gId("consoleDiv");
+    this.consolePre = document.querySelector("#consoleDiv pre");
 
+    this.currentToken = 0;
+    this.key = false;
+
+    this.keyPressed = function(k) {
+        if (this.key) {
+            this.nextToken();
+        }
+
+        return;
+    };
+    
+
+    this.init = function() {
+        var date = new Date();
+        var m = date.getMonth() + 1;
+        var y = date.getFullYear();
+        if (m < 10) m = "0" + m;
+
+        var txt = this.consolePre.innerHTML;
+        txt = txt.replace(/\$m/g, m).replace(/\$y/g, y);
+
+        this.tokens = txt.split("%c");
+
+        this.consolePre.innerHTML = "";
+        document.onkeypress = this.keyPressed.bind(this);
+
+        this.consolePre.className = this.consolePre.className.replace("hidden", "");
+
+        this.nextToken();
+    };
+
+    this.nextToken = function() {
+        this.key = false;
+
+        this.consolePre.innerHTML = this.consolePre.innerHTML.substr(0, this.consolePre.innerHTML.length - 1);
+        this.consolePre.innerHTML += this.tokens[this.currentToken];
+        this.consolePre.innerHTML += "_";
+        this.currentToken++;
+
+        if (this.currentToken < this.tokens.length) {
+            if (this.tokens[this.currentToken].indexOf("%k") > -1) {
+                this.key = true;
+            } else if (this.tokens[this.currentToken].indexOf("%l")  > -1) {
+                setTimeout(this.nextToken.bind(this), 2000);
+            } else if (this.tokens[this.currentToken].indexOf("%s")  > -1) {
+                setTimeout(this.nextToken.bind(this), 700);
+            }
+            
+            this.tokens[this.currentToken] = this.tokens[this.currentToken].replace(/%[a-z]/g, "");
+        } else {
+            this.consoleDiv.removeChild(this.consolePre);
+            this.consoleDiv.className += "hidden";
+        }
+    };
+
+    this.init();
+};
+
+
+// Game
 var Game = function() {
     this.matches = [];
     this.week = 0;
@@ -635,6 +696,7 @@ var Game = function() {
 }
 
 var game = new Game();
+var console = new Console();
 
 (function() {
     game.start();
