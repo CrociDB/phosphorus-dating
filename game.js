@@ -55,7 +55,8 @@ var texts = {
     date_conf: "<p>Do you want to match <b>$1</b> and <b>$2</b>?</p><p>After that they will go to a date and then you will get a date report.</p>",
     date_end: "<p>Seems like the date between <b>$1</b> and <b>$2</b> finished. Date result: <span class=\"$3\">$4</span></p>",
     bonus_conf: "<p>Are you sure you want to swap the available people? You have <b>$1</b> bonus left.</p>",
-    bonus_not: "<p>You can't do that because you don't have any bonus left.</p>"
+    bonus_not: "<p>You can't do that because you don't have any bonus left.</p>",
+    week_started: "Week <b>$1</b> just started. You need to match <b>$2</b> people in the left list to go to the next one."
 };
 
 var match_category = [
@@ -551,12 +552,14 @@ var Game = function() {
         this.renderDetails();
         this.updateDateData();
 
-        showDialogOk("Week", "Week <b>" + this.week + "</b> just started. You have <b>" + this.opeople.length + "</b> people to match.");
+        var txt = texts.week_started.replace("$1", this.week).replace("$2", this.opeople.length);
+        showDialogOk("Week", txt);
     };
 
     this.startWeekPeople = function() {
         this.opeople = [];
-        for (var i = 0; i < 3; i++)
+        var a = 3 + Math.floor((this.week) / 2);
+        for (var i = 0; i < a; i++)
         {
             var p = new Person();
             this.opeople.push(p);
