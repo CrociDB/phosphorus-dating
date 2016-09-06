@@ -60,9 +60,9 @@ var texts = {
 };
 
 var match_category = [
-    { score: 200, title: "Marriage", text: "Wow! They really got along very well. Don't be surprise if you get a marriage invite soon." },
-    { score: 150, title: "Date", text: "Amazing date! After that, they went to a motel, had a lot of fun and already set another date for the next week." },
-    { score: 100, title: "Fun", text: "They're kind of addicted to each other. Other dates are coming, maybe travel together?" },
+    { score: 150, title: "Marriage", text: "Wow! They really got along very well. Don't be surprise if you get a marriage invite soon." },
+    { score: 125, title: "Love", text: "Amazing date! After that, they went to a motel, had a lot of fun and already set another date for the next week." },
+    { score: 100, title: "Passion", text: "They're kind of addicted to each other. Other dates are coming, maybe travel together?" },
     { score: 50, title: "Casual Sex", text: "They had a good sex after the date, but they don't seem like they will go out together any more. Call it a good time." },
     { score: 0, title: "Nice Buddies", text: "They enjoyed conversation together, but doesn't seem like they're going to do anything else. Maybe good friends." },
     { score: -100, title: "Strangers", text: "Weird \"date\" (if one can call that way). Unconfortable talking with a total stranger. That shall not happen ever again." },
@@ -285,7 +285,6 @@ var Match = function(p1, p2) {
             seconds = seconds / 1.8;
         }
         this.step = 100 / (seconds * 100);
-        console.log(seconds, this.step);
     };
 
     this.getCategory = function () {
@@ -345,6 +344,7 @@ var Match = function(p1, p2) {
         }
 
         mtext += '</ul>'
+        mtext += '<p>You scored <b>' + this.total + '</b>.</p>';
         mtext += '</div>';
         showDialogOk("Date finished: " + cat.title, mtext, this.killCurrentMatch.bind(this));
     };
@@ -549,7 +549,7 @@ var Game = function() {
     this.startWeek = function() {
         this.week++;
         this.goodWeekMatches = 0;
-        this.weekMatches = 0;
+        this.finishedMatches = [];
 
         this.startWeekPeople();
         this.randomPeople();
@@ -594,7 +594,7 @@ var Game = function() {
 
         this.dateWeek.innerHTML = this.week;
         this.dateLeft.innerHTML = this.opeople.length;
-        this.dateCouples.innerHTML = this.goodWeekMatches + '/' + this.weekMatches;
+        this.dateCouples.innerHTML = this.goodWeekMatches + '/' + this.finishedMatches.length;
         this.dateRating.innerHTML = rating;
         this.dateScore.innerHTML = this.totalScore < 0 ? "Too low" : this.totalScore;
         this.dateBonus.innerHTML = this.bonus;
@@ -653,7 +653,7 @@ var Game = function() {
         var p2 = this.currentPeople[1];
 
         if (p1 === null || p2 === null) {
-            showDialogOk("Oops", "There's no one else to match right now.");
+            showDialogOk("Oops", "<p>There's no one else to match right now.</p>");
         } else {
             showDialogOk("Do a Match?", 
                         texts.date_conf.replace("$1", p1.name).replace("$2", p2.name),
@@ -679,11 +679,11 @@ var Game = function() {
         var m = new Match(p1, p2);
         m.finished = this.finishedMatch.bind(this);
         this.matches.push(m);
-        console.log(m);
     };
 
     this.finishedMatch = function(m) {
         this.matches.splice(this.matches.indexOf(m), 1);
+        this.finishedMatches.push(m);
 
         if (m.total > 0) {
             this.totalGoodMatches++;
@@ -691,13 +691,10 @@ var Game = function() {
         }
 
         this.totalMatches++;
-        this.weekMatches++;
 
         this.totalScore += m.total;
 
         this.updateDateData();
-
-        console.log(this.opeople, this.matches);
 
         if (this.opeople.length == 0 && this.matches == 0) {
             setTimeout(this.finishWeek.bind(this), 400);
@@ -705,7 +702,39 @@ var Game = function() {
     };
 
     this.finishWeek = function () {
-        this.startWeek();
+        var mtext = "<p>Week <b>" + this.week + "</b> has finished.</p>";
+        mtext += '<div class="inner-object results-box"><p>These are the reports for this week. You matched <b>';
+        mtext += this.finishedMatches.length + '</b> couples, which <b>' + this.goodWeekMatches 
+              + '</b> of them were successful:</p>';
+        mtext += '<ul>';
+
+        console.log(this.finishedMatches);
+
+        for (var i = 0; i < this.finishedMatches.length; i++) {
+            var cat = match_category[this.finishedMatches[i].category];
+            var cls = this.finishedMatches[i].total > 0 ? "results-good" : "results-bad";
+            mtext += '<li>' 
+                  + this.finishedMatches[i].p1.name
+                  + ' & ' 
+                  + this.finishedMatches[i].p2.name 
+                  + ': '
+                  + '<span class="' + cls + '"><b>' + cat.title + '</b></span>'
+                  + '</li>';
+        }
+
+        var score = this.finishedMatches.reduce(function(acc, cur) {
+            return acc + cur.total;
+        }, 0);
+
+        console.log(this.finishedMatches);
+        console.log(score);
+
+        mtext += '</ul>'
+        mtext += '<p>You scored <b>' + score + '</b> points this week.</p>';
+        mtext += '<p>Get ready for next week.</p>';
+        mtext += '</div>';
+
+        showDialogOk("Week Report", mtext, this.startWeek.bind(this));
     };
 }
 

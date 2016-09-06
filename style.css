@@ -113,22 +113,20 @@ body {
     margin-bottom: 30px;
 }
 
-.results {
-    top: 30%;
-    bottom: 30%;
-    left: 30%;
-    right: 30%;
-    
-    width: 400px;
-    height: 300px;
+.dialog section p {
+    margin-top: 3px;
 }
 
 .results-box {
-    padding: 5px;
+    padding: 10px;
     margin-bottom: 15px;
     background-color: #FFFFFF;
     height: 150px;
     overflow-y: auto;
+}
+
+.results-box p {
+    margin-top: 0;
 }
 
 .results-good {
