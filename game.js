@@ -244,7 +244,7 @@ var Match = function(p1, p2) {
     this.calculate = function() {
         this.sex = 0;
         var good = 20;
-        var bad = -150;
+        var bad = -100;
 
         // Gender and Sexual orientation
         if (p1.sex_orient == 2 && p2.sex_orient == 2) {
