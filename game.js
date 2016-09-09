@@ -229,20 +229,20 @@ var Match = function(p1, p2) {
 
         // Gender and Sexual orientation
         if (p1.sex_orient == 2 && p2.sex_orient == 2) {
-            this.sex += 100;
+            this.sex += 50;
         } else if (p1.sex_orient == 0 && p2.sex_orient == 0) {
-            this.sex += p1.gender != p2.gender ? 100 : -150;
+            this.sex += p1.gender != p2.gender ? 50 : -150;
         } else if (p1.sex_orient == 1 && p2.sex_orient == 1) {
-            this.sex += p1.gender == p2.gender ? 100 : -150;
+            this.sex += p1.gender == p2.gender ? 50 : -150;
         } else if (p1.sex_orient == 0 || p2.sex_orient == 0) {
-            var v = p1.gender != p2.gender ? 100 : -100; 
+            var v = p1.gender != p2.gender ? 50 : -100; 
             if (p1.sex_orient == 2 || p2.sex_orient == 2) {
                 this.sex += v;
             } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
                 this.sex -= v;
             } 
         } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
-            var v = p1.gender == p2.gender ? 100 : -100; 
+            var v = p1.gender == p2.gender ? 50 : -100; 
             if (p1.sex_orient == 2 || p2.sex_orient == 2) {
                 this.sex += v;
             } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
@@ -301,6 +301,8 @@ var Match = function(p1, p2) {
             seconds = seconds / 1.8;
         }
         this.step = 100 / (seconds * 100);
+
+        this.score = this.total > 0 ? Math.floor(this.total / 2) : 0;
     };
 
     this.getCategory = function () {
@@ -360,7 +362,7 @@ var Match = function(p1, p2) {
         }
 
         mtext += '</ul>'
-        mtext += '<p>You scored <b>' + this.total + '</b>.</p>';
+        mtext += '<p>You scored <b>' + this.score + '</b>.</p>';
         mtext += '</div>';
         showDialogOk("Date finished: " + cat.title, mtext, this.killCurrentMatch.bind(this));
     };
@@ -721,7 +723,7 @@ var Game = function() {
 
         this.totalMatches++;
 
-        this.totalScore += m.total;
+        this.totalScore += m.score;
 
         this.updateDateData();
 
@@ -752,7 +754,7 @@ var Game = function() {
         }
 
         var score = this.finishedMatches.reduce(function(acc, cur) {
-            return acc + cur.total;
+            return acc + cur.score;
         }, 0);
 
         console.log(this.finishedMatches);
