@@ -498,9 +498,6 @@ var GameConsole = function() {
     this.consoleFix = document.querySelector("#consoleDiv .console-fix");
     this.consolePre = document.querySelector("#consoleDiv pre");
 
-    this.currentToken = 0;
-    this.key = false;
-
     this.keyPressed = function(k) {
         if (this.key) {
             this.nextToken();
@@ -509,22 +506,25 @@ var GameConsole = function() {
         return;
     };
 
-    this.init = function() {
+    this.init = function(text, callback) {
+        this.callback = callback;
+
+        this.consolePre.innerHTML = "";
+
         var date = new Date();
         var m = date.getMonth() + 1;
         var y = date.getFullYear();
         if (m < 10) m = "0" + m;
 
-        var txt = this.consolePre.innerHTML;
+        var txt = text;
         txt = txt.replace(/\$m/g, m).replace(/\$y/g, y);
-
         this.tokens = txt.split("%c");
-
-        this.consolePre.innerHTML = "";
+        this.currentToken = 0;
+        
+        this.key = false;
         document.onkeypress = this.keyPressed.bind(this);
 
-        this.consolePre.className = this.consolePre.className.replace("hidden", "");
-
+        this.show();
         this.nextToken();
     };
 
@@ -549,18 +549,25 @@ var GameConsole = function() {
             
             this.tokens[this.currentToken] = this.tokens[this.currentToken].replace(/%[a-z]/g, "");
         } else {
-            this.remove();
+            if (this.callback) {
+                this.callback();
+            }
         }
     };
 
-    this.remove = function() {
-        this.consoleDiv.removeChild(this.consoleFix);
-        this.consoleDiv.className += "hidden";
+    this.hide = function() {
+        this.consolePre.innerHTML = "";
+        this.consoleDiv.className += " hidden";
         document.onkeypress = null;
         clearInterval(this.timeout);
     };
 
-    this.init();
+    this.show = function() {
+        this.consoleDiv.className = this.consoleDiv.className.replace(/hidden/g, '');
+        this.consolePre.className = this.consolePre.className.replace(/hidden/g, '');
+        
+        this.consoleDiv.focus();
+    };
 };
 
 
@@ -598,6 +605,12 @@ var Game = function() {
 
     this.startWeek = function() {
         this.week++;
+
+        if (this.week > total_weeks) {
+            this.endOfGame();
+            return;
+        }
+
         this.goodWeekMatches = 0;
         this.finishedMatches = [];
 
@@ -761,8 +774,6 @@ var Game = function() {
               + '</b> of them were successful:</p>';
         mtext += '<ul>';
 
-        console.log(this.finishedMatches);
-
         for (var i = 0; i < this.finishedMatches.length; i++) {
             var cat = match_category[this.finishedMatches[i].category];
             var cls = this.finishedMatches[i].total > 0 ? "results-good" : "results-bad";
@@ -779,9 +790,6 @@ var Game = function() {
             return acc + cur.score;
         }, 0);
 
-        console.log(this.finishedMatches);
-        console.log(score);
-
         mtext += '</ul>'
         mtext += '<p>You scored <b>' + score + '</b> points this week.</p>';
         mtext += '<p>Get ready for next week.</p>';
@@ -789,11 +797,15 @@ var Game = function() {
 
         showDialogOk("Week Report", mtext, this.startWeek.bind(this));
     };
+
+    this.endOfGame = function() {
+        gameConsole.init(gId("consoleEndOfGame").innerHTML);
+    };
 }
 
 var game = new Game();
 var gameConsole = new GameConsole();
-gameConsole.remove();
+gameConsole.init(gId("consoleStart").innerHTML, function() { gameConsole.hide(); });
 
 (function() {
     game.start();

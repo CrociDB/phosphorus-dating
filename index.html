@@ -68,6 +68,32 @@
 
         <div id="consoleDiv" class="console"><div class="console-fix">
             <pre class="hidden">
+            </pre>
+        </div></div>
+
+        <!-- Templates -->
+
+        <div id="peopleListTemplate" class="hidden">
+            <li><a href="javascript:game.clickPerson($1, $2);">$3</a></li>
+        </div>
+
+        <div id="dateListTemplate" class="hidden">
+            <li><p>$1</p><progress value="0" max="100" class="inner-object"></progress></li>
+        </div>
+        
+        <div id="peopleDetail" class="hidden">
+            <h1>$1</h1>
+            <span>$2</span>
+            <article>$3</article>
+            <div class="div-quote-open">&ldquo;</div>
+            <div class="div-quote-close">&rdquo;</div>
+        </div>
+
+        <div id="matchItemTemplate" class="hidden">
+            <p>$1</p><progress id="matchProgress-$2" value="0" max="100" class="inner-object"></progress>
+        </div>
+
+        <div id="consoleStart" class="hidden">
 % ./goback-machine<span style="color:green">
   ____      ______         ____             __      __  ___           __    _               ____
  / / /     / ____/___     / __ )____ ______/ /__   /  |/  /___ ______/ /_  (_)___  ___     / / /
@@ -107,32 +133,15 @@ PRESS ANY KEY TO LOG IN %c%k
 
 > LOADING USER INTERFACE... %c%l
 %c%l
+
 %c%s
 %c%s
-</pre>
-        </div></div>
-
-        <!-- Templates -->
-
-        <div id="peopleListTemplate" class="hidden">
-            <li><a href="javascript:game.clickPerson($1, $2);">$3</a></li>
-        </div>
-
-        <div id="dateListTemplate" class="hidden">
-            <li><p>$1</p><progress value="0" max="100" class="inner-object"></progress></li>
-        </div>
-        
-        <div id="peopleDetail" class="hidden">
-            <h1>$1</h1>
-            <span>$2</span>
-            <article>$3</article>
-            <div class="div-quote-open">&ldquo;</div>
-            <div class="div-quote-close">&rdquo;</div>
-        </div>
-
-        <div id="matchItemTemplate" class="hidden">
-            <p>$1</p><progress id="matchProgress-$2" value="0" max="100" class="inner-object"></progress>
-        </div>
+%c%s
+%c%s</div>
+        <div id="consoleEndOfGame" class="hidden">
+> KILLING PHOSPHORUS DATING%c%l
+%c%s
+%c%s</div>
 
         <!-- Script -->
         <script src="game.js"></script>

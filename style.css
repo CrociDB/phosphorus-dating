@@ -310,6 +310,10 @@ body {
     overflow: hidden;
 }
 
+.console:hover {
+    cursor: wait;
+}
+
 .console-fix {
     width: 100%;
     height: 100%;
