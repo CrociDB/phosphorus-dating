@@ -355,5 +355,6 @@ body {
 }
 
 #taskbar > p {
+    text-align: right;
     margin: 5px;
 }
