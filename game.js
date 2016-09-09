@@ -51,13 +51,15 @@ var sex_orient = [
     { w: .15, t: "Bisexual" },       // 2
 ];
 
+var total_weeks = 3;
+
 var texts = {
     date_conf: "<p>Do you want to match <b>$1</b> and <b>$2</b>?</p><p>After that they will go to a date and then you will get a date report.</p>",
     date_end: "<p>Seems like the date between <b>$1</b> and <b>$2</b> finished. Date result: <span class=\"$3\">$4</span></p>",
     bonus_conf: "<p>Are you sure you want to swap the available people? You have <b>$1</b> bonus left.</p>",
     bonus_not: "<p>You can't do that because you don't have any bonus left.</p>",
     week_started: "<p>Week <b>$1</b> just started. You need to match <b>$2</b> people in the left list to go to the next one.</p>",
-    welcome_help: "<div class=\"inner-object results-box\"><p>Phosphorus Dating is a very modern dating website, our matching algorithm was considered one of the most advanced ever created. We achieved more than <b>95%</b> of successful couples. But recently something happened and for some reason the accuracy is below <b>25%</b>, this is why we activated the manual mode and you're here.</p><p>You have <b>7</b> weeks to match couples based on their <b>gender</b>, <b>sexual orientation</b>, <b>age</b> and <b>interests</b>. Every week you will have to find a good couple for the people in the left list of the Phosphorus Dating program. Pick the right person on the right and match the couple. If you can't find a good match, you can try to ask more people, but be careful, it's limited.</p><p>When you match a couple, they will go out on a date and you can keep up with the progress on the lower left date list on the program. After that finishes you'll get a report.</p></div>"
+    welcome_help: "<div class=\"inner-object results-box\"><p>Phosphorus Dating is a very modern dating website, our matching algorithm was considered one of the most advanced ever created. We achieved more than <b>95%</b> of successful couples. But recently something happened and for some reason the accuracy is below <b>25%</b>, this is why we activated the manual mode and you're here.</p><p>You have <b>" + total_weeks + "</b> weeks to match couples based on their <b>gender</b>, <b>sexual orientation</b>, <b>age</b> and <b>interests</b>. Every week you will have to find a good couple for the people in the left list of the Phosphorus Dating program. Pick the right person on the right and match the couple. If you can't find a good match, you can try to ask more people, but be careful, it's limited.</p><p>When you match a couple, they will go out on a date and you can keep up with the progress on the lower left date list on the program. After that finishes you'll get a report.</p></div>"
 };
 
 var match_category = [
@@ -70,6 +72,7 @@ var match_category = [
     { score: -170, title: "Awkward", text: "The most awkward event in their lives. They're going to forget that forever." },
     { score: -250, title: "Fight", text: "Oh my Dog! There was a fight over there! They don't even want to see each other's face in the streets! That's awful." }
 ];
+
 
 // Util
 var gId = function(t) { return document.getElementById(t); };
@@ -140,6 +143,18 @@ var getTraitsExcept = function(exception) {
     });
 
     return ts;
+};
+
+// Cecilia
+
+var cecilia_dent = {
+    gender: 0,
+    orientation: "Straight",
+    sex_orient: 0,
+    name: "Cecilia Dent",
+    age: 22,
+    traits: [{s: 0, d: 2}, {s: 1, d: 2}, {s: 4, d: 2}, {s: 6, d: 2}],
+    bio: "Scientist interested in Time Travel. I want to have two children, a boy Arthur and a girl Cecilia, why only men can name their children after themselves?"
 };
 
 // Person
@@ -576,10 +591,13 @@ var Game = function() {
     this.startWeekPeople = function() {
         this.opeople = [];
         var a = 3 + Math.floor((this.week) / 2);
-        for (var i = 0; i < a; i++)
-        {
+        for (var i = 0; i < a; i++) {
             var p = new Person();
             this.opeople.push(p);
+        }
+
+        if (this.week == total_weeks) {
+            this.opeople.push(cecilia_dent);
         }
 
         this.currentPeople[0] = this.opeople[0];
@@ -751,7 +769,7 @@ var Game = function() {
 
 var game = new Game();
 var gameConsole = new GameConsole();
-//gameConsole.remove();
+gameConsole.remove();
 
 (function() {
     game.start();
