@@ -1,8 +1,8 @@
 // Data
 var subjects = [
     { name: "Video Game" },       // 0
-    { name: "Read" },             // 1
-    { name: "Soccer" },           // 2
+    { name: "Books" },            // 1
+    { name: "TV" },               // 2
     { name: "Drinks" },           // 3
     { name: "Technology" },       // 4
     { name: "Fitness" },          // 5
@@ -13,41 +13,58 @@ var subjects = [
 
 var traits = [
     // s: subject, d: direction, t: text
-    { s: 0, d: 2, o: 1, t: "One of my main activities: play videogames." },
+    { s: 0, d: 2, o: 1, t: "Playing videogames." },
+    { s: 0, d: 2, o: 1, t: "Still in love with my Super Nintendo." },
+    { s: 0, d: 0, o: 4, t: "Not into games." },
+
     { s: 1, d: 2, o: 1, t: "Like Books, comic books and graphic novels." },
-    { s: 1, d: 2, o: 1, t: "Books." },
+    { s: 1, d: 2, o: 1, t: "Poetry." },
     { s: 1, d: 2, o: 1, t: "Love reading." },
     { s: 1, d: 0, o: 1, t: "Books are the old media." },
-    { s: 2, d: 2, o: 5, t: "Wanna join me in a soccer game?" },
-    { s: 2, d: 0, o: 5, t: "Oh, don't talk to me if you watch soccer." },
-    { s: 3, d: 2, o: 1, t: "Man, I love beer!" },
+    { s: 1, d: 0, o: 4, t: "I don't read books, come on, it's the 90's!" },
+
+    { s: 2, d: 2, o: 2, t: "I love soap operas." },
+    { s: 2, d: 0, o: 5, t: "I hate TV." },
+    
+    { s: 3, d: 2, o: 1, t: "Uh, I love beer!" },
     { s: 3, d: 2, o: 5, t: "Maybe we can go out for a beer?" },
     { s: 3, d: 2, o: 0, t: "Love me some wine." },
     { s: 3, d: 0, o: 3, t: "If you're wondering, I don't drink." },
     { s: 3, d: 0, o: 3, t: "No alcohol for me." },
+    { s: 3, d: 0, o: 3, t: "No drinking." },
+
     { s: 4, d: 2, o: 0, t: "I write computer programs." },
     { s: 4, d: 2, o: 0, t: "I speak C++." },
     { s: 4, d: 2, o: 0, t: "This Internet thing is promising." },
+    { s: 4, d: 0, o: 0, t: "I'm not a tech person." },
+    { s: 4, d: 0, o: 0, t: "I don't understand this internet." },
+
     { s: 5, d: 2, o: 3, t: "Jogging." },
     { s: 5, d: 2, o: 3, t: "Play basketball." },
     { s: 5, d: 0, o: 5, t: "High five sedentary people!" },
+    { s: 5, d: 0, o: 3, t: "No sports." },
+
     { s: 6, d: 2, o: 1, t: "Hail Carl Sagan!" },
     { s: 6, d: 0, o: 0, t: "God in first place." },
-    { s: 7, d: 0, o: 0, t: "Ultra-conservative." },
-    { s: 7, d: 0, o: 0, t: "I'm a conservative." },
+
+    { s: 7, d: 0, o: 3, t: "Capitalism and Conservadorism." },
+    { s: 7, d: 0, o: 0, t: "Right-winged person." },
     { s: 7, d: 2, o: 5, t: "Have you read some Karl Marx?" },
     { s: 7, d: 2, o: 2, t: "Communism, socialism, and anarchism." },
+
     { s: 8, d: 2, o: 3, t: "Totally a cat person." },
+    { s: 8, d: 2, o: 3, t: "I have a kitten." },
     { s: 8, d: 0, o: 3, t: "Dog person here." },
+    { s: 8, d: 0, o: 5, t: "Love puppies!" },
 ];
 
-var female_names = ["Joanna", "Linda", "Lorenna", "Alyssa", "Anna", "Anne", "Eduarda", "Kat", "Giuliana", "Lais", "Adrianne", "Gal", "Olivia"];
-var male_names = ["Bruno", "John", "Marcus", "Jay", "Rodrigo", "Anderson", "Val", "Germano", "George", "Mamoru", "Ed", "Felipe", "Klev"];
-var last_names = ["Smith", "Silva", "Johnson", "Kim", "Cruz", "Lee", "Yamada", "Kilmer", "Lopes", "Miya", "Drake", "Lira", "Love", "Lake"]
+var female_names = ["Joanna", "Linda", "Lorenna", "Alyssa", "Anna", "Anne", "Eduarda", "Kat", "Giuliana", "Lais", "Adrianne", "Gal", "Olivia", "Nicole", "Lianna", "Laura", "Emma", "Chloe"];
+var male_names = ["Bruno", "John", "Marcus", "Jay", "Rodrigo", "Anderson", "Val", "Germano", "George", "Mamoru", "Ed", "Felipe", "Klev", "Beto", "Frank", "Daniel", "Karl", "Simon", "Leo"];
+var last_names = ["Smith", "Silva", "Johnson", "Kim", "Cruz", "Lee", "Yamada", "Kilmer", "Lopes", "Miya", "Drake", "Lira", "Love", "Lake", "Romero", "Stark", "Muller", "Mayer", "Laurent"];
 
 var sex_orient = [ 
-    { w: .55, t: "Straight" },       // 0
-    { w: .30, t: "Homosexual" },     // 1
+    { w: .60, t: "Straight" },       // 0
+    { w: .25, t: "Homosexual" },     // 1
     { w: .15, t: "Bisexual" },       // 2
 ];
 
@@ -63,14 +80,14 @@ var texts = {
 };
 
 var match_category = [
-    { score: 150, title: "Marriage", text: "Wow! They really got along very well. Don't be surprise if you get a marriage invite soon." },
-    { score: 125, title: "Love", text: "Amazing date! After that, they went to a motel, had a lot of fun and already set another date for the next week." },
-    { score: 100, title: "Passion", text: "They're kind of addicted to each other. Other dates are coming, maybe travel together?" },
-    { score: 50, title: "Casual Sex", text: "They had a good sex after the date, but they don't seem like they will go out together any more. Call it a good time." },
+    { score: 90, title: "Marriage", text: "Wow! They really got along very well. Don't be surprise if you get a marriage invite soon." },
+    { score: 65, title: "Love", text: "Amazing date! After that, they went to a motel, had a lot of fun and already set another date for the next week." },
+    { score: 45, title: "Passion", text: "They're kind of addicted to each other. Other dates are coming, maybe travel together?" },
+    { score: 20, title: "Casual Sex", text: "They had a good sex after the date, but they don't seem like they will go out together any more. Call it a good time." },
     { score: 0, title: "Nice Buddies", text: "They enjoyed conversation together, but doesn't seem like they're going to do anything else. Maybe good friends." },
     { score: -100, title: "Strangers", text: "Weird \"date\" (if one can call that way). Unconfortable talking with a total stranger. That shall not happen ever again." },
-    { score: -170, title: "Awkward", text: "The most awkward event in their lives. They're going to forget that forever." },
-    { score: -250, title: "Fight", text: "Oh my Dog! There was a fight over there! They don't even want to see each other's face in the streets! That's awful." }
+    { score: -150, title: "Awkward", text: "The most awkward event in their lives. They're going to forget that forever." },
+    { score: -220, title: "Fight", text: "Oh my Dog! There was a fight over there! They don't even want to see each other's face in the streets! That's awful." }
 ];
 
 
@@ -178,7 +195,7 @@ var Person = function () {
     // Trais
     this.traits = [];
     this.bio = "";
-    var amount = rangeRand(2, 4);
+    var amount = rangeRand(3, 5);
     for (var i = 0; i < amount; i++) {
         var t = getTraitsExcept(this.traits).rand();
         this.traits.push(t);
@@ -226,23 +243,25 @@ var Match = function(p1, p2) {
 
     this.calculate = function() {
         this.sex = 0;
+        var good = 20;
+        var bad = -150;
 
         // Gender and Sexual orientation
         if (p1.sex_orient == 2 && p2.sex_orient == 2) {
             this.sex += 50;
         } else if (p1.sex_orient == 0 && p2.sex_orient == 0) {
-            this.sex += p1.gender != p2.gender ? 50 : -150;
+            this.sex += p1.gender != p2.gender ? good : bad;
         } else if (p1.sex_orient == 1 && p2.sex_orient == 1) {
-            this.sex += p1.gender == p2.gender ? 50 : -150;
+            this.sex += p1.gender == p2.gender ? good : bad;
         } else if (p1.sex_orient == 0 || p2.sex_orient == 0) {
-            var v = p1.gender != p2.gender ? 50 : -100; 
+            var v = Math.floor(p1.gender != p2.gender ? good : bad / 1.3); 
             if (p1.sex_orient == 2 || p2.sex_orient == 2) {
                 this.sex += v;
             } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
                 this.sex -= v;
             } 
         } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
-            var v = p1.gender == p2.gender ? 50 : -100; 
+            var v = Math.floor(p1.gender == p2.gender ? good : bad / 1.3); 
             if (p1.sex_orient == 2 || p2.sex_orient == 2) {
                 this.sex += v;
             } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
@@ -267,7 +286,7 @@ var Match = function(p1, p2) {
 
         var ig = intersection.group(tts);
         ig.forEach(function(e) {
-            var sum = e.values.reduce(function(acc, v, i, a) {
+            var sum = e.values.reduce(function(acc, v) {
                 return acc + v.d;
             }, 0) - 2;
 
@@ -283,9 +302,11 @@ var Match = function(p1, p2) {
         this.subjects = this.p1.traits.concat(this.p2.traits).map(function (t) { return subjects[t.s]; }).unique();
 
         // Traits and Sex info
-        this.total = this.sex + (this.negative * -20) + (this.positive * 20);
+        this.total = this.sex + (this.negative * -30) + (this.positive * 30);
         var neutral_score = (this.neutral * 10);
-        this.total += rangeRand((neutral_score / -2), (neutral_score / 2));
+        var neutral_range = rangeRand((neutral_score / -2), (neutral_score / 2));
+        // Still thinking if I should let this...
+        //this.total += neutral_range;
 
         // Age info
         var ageabs = Math.abs(this.p1.age - this.p2.age);
@@ -303,6 +324,7 @@ var Match = function(p1, p2) {
         this.step = 100 / (seconds * 100);
 
         this.score = this.total > 0 ? Math.floor(this.total / 2) : 0;
+        console.log(this);
     };
 
     this.getCategory = function () {
