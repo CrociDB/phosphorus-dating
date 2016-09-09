@@ -87,7 +87,7 @@ var match_category = [
     { score: 0, title: "Nice Buddies", text: "They enjoyed conversation together, but doesn't seem like they're going to do anything else. Maybe good friends." },
     { score: -100, title: "Strangers", text: "Weird \"date\" (if one can call that way). Unconfortable talking with a total stranger. That shall not happen ever again." },
     { score: -150, title: "Awkward", text: "The most awkward event in their lives. They're going to forget that forever." },
-    { score: -220, title: "Fight", text: "Oh my Dog! There was a fight over there! They don't even want to see each other's face in the streets! That's awful." }
+    { score: -250, title: "Fight", text: "Oh my Dog! There was a fight over there! They don't even want to see each other's face in the streets! That's awful." }
 ];
 
 
@@ -248,24 +248,23 @@ var Match = function(p1, p2) {
 
         // Gender and Sexual orientation
         if (p1.sex_orient == 2 && p2.sex_orient == 2) {
-            this.sex += 50;
+            this.sex += good;
         } else if (p1.sex_orient == 0 && p2.sex_orient == 0) {
             this.sex += p1.gender != p2.gender ? good : bad;
         } else if (p1.sex_orient == 1 && p2.sex_orient == 1) {
             this.sex += p1.gender == p2.gender ? good : bad;
         } else if (p1.sex_orient == 0 || p2.sex_orient == 0) {
-            var v = Math.floor(p1.gender != p2.gender ? good : bad / 1.3); 
             if (p1.sex_orient == 2 || p2.sex_orient == 2) {
-                this.sex += v;
+                this.sex += Math.floor(p1.gender != p2.gender ? good : bad);
             } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
-                this.sex -= v;
+                this.sex += bad;
             } 
         } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
             var v = Math.floor(p1.gender == p2.gender ? good : bad / 1.3); 
             if (p1.sex_orient == 2 || p2.sex_orient == 2) {
-                this.sex += v;
-            } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
-                this.sex -= v;
+                this.sex += Math.floor(p1.gender == p2.gender ? good : bad);
+            } else if (p1.sex_orient == 0 || p2.sex_orient == 0) {
+                this.sex += bad;
             } 
         }
 
