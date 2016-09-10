@@ -63,9 +63,9 @@ var male_names = ["Bruno", "John", "Marcus", "Jay", "Rodrigo", "Anderson", "Val"
 var last_names = ["Smith", "Silva", "Johnson", "Kim", "Cruz", "Lee", "Yamada", "Kilmer", "Lopes", "Miya", "Drake", "Lira", "Love", "Lake", "Romero", "Stark", "Muller", "Mayer", "Laurent"];
 
 var sex_orient = [ 
-    { w: .60, t: "Straight" },       // 0
-    { w: .25, t: "Homosexual" },     // 1
-    { w: .15, t: "Bisexual" },       // 2
+    { w: 0.60, t: "Straight" },       // 0
+    { w: 0.25, t: "Homosexual" },     // 1
+    { w: 0.15, t: "Bisexual" },       // 2
 ];
 
 var total_weeks = 1;
@@ -96,13 +96,13 @@ var gId = function(t) { return document.getElementById(t); };
 
 Array.prototype.rand = function() {
     return this[Math.floor((Math.random() * this.length))];
-}
+};
 
 Array.prototype.group = function(keyFunction) {
     var groups = {};
     this.forEach(function(el) {
         var key = keyFunction(el);
-        if (key in groups == false) {
+        if (!(key in groups)) {
             groups[key] = [];
         }
         groups[key].push(el);
@@ -122,7 +122,7 @@ Array.prototype.unique = function() {
         }
         return accum;
     }, []);
-}
+};
 
 var rangeRand = function (min, max) {
     return min + Math.floor((Math.random() * (max - min + 1)));
@@ -137,12 +137,12 @@ var weightRand = function(arr) {
         t += arr[j].w;
         if (i < t) return arr[j].t;
     }
-}
+};
 
 var getOrientIndex = function(t) {
     for (var j = 0; j < sex_orient.length; j++)
     {
-        if (sex_orient[j].t === t) {
+        if (sex_orient[j].t == t) {
             return j;
         }
     }
@@ -189,7 +189,7 @@ var Person = function () {
 
     // Age
     var max = 30;
-    if (rangeRand(0, 100) > 65) max = 52
+    if (rangeRand(0, 100) > 65) max = 52;
     this.age = rangeRand(18, max);
 
     // Trais
@@ -201,7 +201,7 @@ var Person = function () {
         this.traits.push(t);
     }
 
-    this.traits.sort(function(a, b) { return a.o - b.o });
+    this.traits.sort(function(a, b) { return a.o - b.o; });
     this.traits.forEach(function(t) {
         this.bio += t.t + " ";
         if (rangeRand(1,100) > 90) {
@@ -249,21 +249,20 @@ var Match = function(p1, p2) {
         // Gender and Sexual orientation
         if (p1.sex_orient == 2 && p2.sex_orient == 2) {
             this.sex += good;
-        } else if (p1.sex_orient == 0 && p2.sex_orient == 0) {
+        } else if (p1.sex_orient === 0 && p2.sex_orient === 0) {
             this.sex += p1.gender != p2.gender ? good : bad;
-        } else if (p1.sex_orient == 1 && p2.sex_orient == 1) {
+        } else if (p1.sex_orient === 1 && p2.sex_orient === 1) {
             this.sex += p1.gender == p2.gender ? good : bad;
-        } else if (p1.sex_orient == 0 || p2.sex_orient == 0) {
+        } else if (p1.sex_orient === 0 || p2.sex_orient === 0) {
             if (p1.sex_orient == 2 || p2.sex_orient == 2) {
                 this.sex += Math.floor(p1.gender != p2.gender ? good : bad);
-            } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
+            } else if (p1.sex_orient === 1 || p2.sex_orient === 1) {
                 this.sex += bad;
             } 
-        } else if (p1.sex_orient == 1 || p2.sex_orient == 1) {
-            var v = Math.floor(p1.gender == p2.gender ? good : bad / 1.3); 
-            if (p1.sex_orient == 2 || p2.sex_orient == 2) {
+        } else if (p1.sex_orient === 1 || p2.sex_orient === 1) {
+            if (p1.sex_orient === 2 || p2.sex_orient === 2) {
                 this.sex += Math.floor(p1.gender == p2.gender ? good : bad);
-            } else if (p1.sex_orient == 0 || p2.sex_orient == 0) {
+            } else if (p1.sex_orient === 0 || p2.sex_orient === 0) {
                 this.sex += bad;
             } 
         }
@@ -289,7 +288,7 @@ var Match = function(p1, p2) {
                 return acc + v.d;
             }, 0) - 2;
 
-            if (sum == 0) {
+            if (sum === 0) {
                 this.negative++;
             } else {
                 this.positive++;
@@ -373,7 +372,7 @@ var Match = function(p1, p2) {
                         replace("$4", cat.title);
 
         mtext += '<div class="inner-object results-box"><p>' + cat.text + '</p>';
-        mtext += '<p>They talked about:</p>'
+        mtext += '<p>They talked about:</p>';
         mtext += '<ul>';
 
         var divider = this.total > 0 ? 1 : 2;
@@ -382,7 +381,7 @@ var Match = function(p1, p2) {
             mtext += '<li>' + this.subjects[i].name + '</li>';
         }
 
-        mtext += '</ul>'
+        mtext += '</ul>';
         mtext += '<p>You scored <b>' + this.score + '</b>.</p>';
         mtext += '</div>';
         showDialogOk("Date finished: " + cat.title, mtext, this.killCurrentMatch.bind(this));
@@ -413,7 +412,7 @@ function peopleDetail(person) {
     }
 
     var t = gId("peopleDetail");
-    var s = (person.gender == 0 ? "Female" : "Male") + " - " + person.orientation;
+    var s = (person.gender === 0 ? "Female" : "Male") + " - " + person.orientation;
     return t.innerHTML.replace("$1", person.name + ", " + person.age)
                       .replace("$2", s).replace("$3", person.bio);
 }
@@ -690,7 +689,7 @@ var Game = function() {
     };
 
     this.clickPerson = function(l, id) {
-        this.currentPeople[l] = l == 0 ? this.opeople[id] : this.people[id];
+        this.currentPeople[l] = l === 0 ? this.opeople[id] : this.people[id];
         this.renderDetails(l);
     };
 
@@ -772,6 +771,8 @@ var Game = function() {
 
         this.updateDateData();
 
+        console.log(this);
+
         if (this.opeople.length == 0 && this.matches == 0) {
             setTimeout(this.finishWeek.bind(this), 400);
         }
@@ -780,27 +781,27 @@ var Game = function() {
     this.finishWeek = function () {
         var mtext = "<p>Week <b>" + this.week + "</b> has finished.</p>";
         mtext += '<div class="inner-object results-box"><p>These are the reports for this week. You matched <b>';
-        mtext += this.finishedMatches.length + '</b> couples, which <b>' + this.goodWeekMatches 
-              + '</b> of them were successful:</p>';
+        mtext += this.finishedMatches.length + '</b> couples, which <b>' + this.goodWeekMatches;
+        mtext += '</b> of them were successful:</p>';
         mtext += '<ul>';
 
         for (var i = 0; i < this.finishedMatches.length; i++) {
             var cat = match_category[this.finishedMatches[i].category];
             var cls = this.finishedMatches[i].total > 0 ? "results-good" : "results-bad";
-            mtext += '<li>' 
-                  + this.finishedMatches[i].p1.name
-                  + ' & ' 
-                  + this.finishedMatches[i].p2.name 
-                  + ': '
-                  + '<span class="' + cls + '"><b>' + cat.title + '</b></span>'
-                  + '</li>';
+            mtext += '<li>';
+            mtext += this.finishedMatches[i].p1.name;
+            mtext += ' & '; 
+            mtext += this.finishedMatches[i].p2.name;
+            mtext += ': ';
+            mtext += '<span class="' + cls + '"><b>' + cat.title + '</b></span>';
+            mtext += '</li>';
         }
 
         var score = this.finishedMatches.reduce(function(acc, cur) {
             return acc + cur.score;
         }, 0);
 
-        mtext += '</ul>'
+        mtext += '</ul>';
         mtext += '<p>You scored <b>' + score + '</b> points this week.</p>';
         mtext += '<p>Get ready for next week.</p>';
         mtext += '</div>';
@@ -818,12 +819,12 @@ var Game = function() {
             }, "error");
         }
     };
-}
+};
 
 var game = new Game();
 var gameConsole = new GameConsole();
- gameConsole.init(gId("consoleStart").innerHTML, function() { gameConsole.hide(); });
-// gameConsole.hide();
+gameConsole.init(gId("consoleStart").innerHTML, function() { gameConsole.hide(); });
+gameConsole.hide();
 
 (function() {
     game.start();
