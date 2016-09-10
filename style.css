@@ -327,6 +327,21 @@ body {
     font-weight: bold;
 }
 
+.error {
+    background-color: #0000AA;
+    font-size: 16px;
+}
+
+.error .title {
+    text-align: center;
+}
+
+.error .title > span {
+    background-color: #AAAAAA;
+    color: #0000AA;
+    padding: 5px;
+}
+
 /* Ids */
 
 #dateList {

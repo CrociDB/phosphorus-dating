@@ -68,7 +68,7 @@ var sex_orient = [
     { w: .15, t: "Bisexual" },       // 2
 ];
 
-var total_weeks = 3;
+var total_weeks = 1;
 
 var texts = {
     date_conf: "<p>Do you want to match <b>$1</b> and <b>$2</b>?</p><p>After that they will go to a date and then you will get a date report.</p>",
@@ -505,8 +505,14 @@ var GameConsole = function() {
         return;
     };
 
-    this.init = function(text, callback) {
+    this.init = function(text, callback, options) {
         this.callback = callback;
+
+        if (options && options == "error") {
+            this.consoleDiv.className += " error";
+        } else {
+            this.consoleDiv.className = this.consoleDiv.className.replace(/ error/g, '');
+        }
 
         this.consolePre.innerHTML = "";
 
@@ -743,6 +749,11 @@ var Game = function() {
 
         var m = new Match(p1, p2);
         m.finished = this.finishedMatch.bind(this);
+
+        if (p1 == cecilia_dent || p2 == cecilia_dent) {
+            this.ceciliaMatch = m;
+        }
+
         this.matches.push(m);
     };
 
@@ -798,13 +809,21 @@ var Game = function() {
     };
 
     this.endOfGame = function() {
-        gameConsole.init(gId("consoleEndOfGame").innerHTML);
+        if (this.ceciliaMatch && this.ceciliaMatch.total > 0) {
+            gameConsole.init(gId("consoleEndOfGame").innerHTML);
+        } else {
+            gameConsole.init(gId("consoleError").innerHTML, function() { 
+                gameConsole.hide(); 
+                gameConsole.init(gId("consoleEndOfGame").innerHTML);
+            }, "error");
+        }
     };
 }
 
 var game = new Game();
 var gameConsole = new GameConsole();
-gameConsole.init(gId("consoleStart").innerHTML, function() { gameConsole.hide(); });
+ gameConsole.init(gId("consoleStart").innerHTML, function() { gameConsole.hide(); });
+// gameConsole.hide();
 
 (function() {
     game.start();
