@@ -345,6 +345,21 @@ body {
     font-weight: bold;
 }
 
+.console pre a {
+    color: #AEAEAE;
+    text-decoration: underline;
+}
+
+.console pre a:hover {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.console pre a:visited {
+    color: #AEAEAE;
+    text-decoration: underline;
+}
+
 .error {
     background-color: #0000AA;
     font-size: 16px;
