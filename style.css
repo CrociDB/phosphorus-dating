@@ -32,6 +32,7 @@ body {
     display: block;
     margin-bottom: 5px;
     padding: 5px;
+    background-color: #C0C0C0;
 
     text-align: center;
     text-decoration: none;
@@ -65,6 +66,7 @@ body {
     display: inline;
     padding-left: 25px;
     padding-right: 25px;
+    background-color: #C0C0C0;
 }
 
 .big-button {
@@ -195,6 +197,14 @@ body {
     color: #C0C0C0;
 }
 
+.small-list {
+    height: 215px;
+}
+
+.dismiss {
+    margin-top: 5px;
+}
+
 .people-detail {
     position: relative;
     width: 280px;
@@ -262,10 +272,6 @@ body {
 .float-left {
     float: left;
     margin-right: 5px;
-}
-
-.float-left-last {
-    float: left;
 }
 
 .separator {
@@ -363,6 +369,7 @@ body {
 }
 
 #peopleArea {
+    margin-bottom: 0;
     overflow: auto;
 }
 
