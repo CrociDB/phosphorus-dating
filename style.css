@@ -44,9 +44,21 @@ body {
 
 .button:active {
     cursor: default;
+    background-color: #D7D3DA;
     border: #DAF0F0 solid 2px;
     border-top: #282626 solid 2px;
     border-left: #282626 solid 2px;
+}
+
+.disabled {
+    color: #959095;
+}
+
+.disabled:active {
+    background-color: inherit;
+    border: #DAF0F0 solid 2px;
+    border-bottom: #282626 solid 2px;
+    border-right: #282626 solid 2px;
 }
 
 .inline-button {

@@ -35,15 +35,13 @@
                     <div class="float-right game-info-last">
                         <h1>Total couple rating</h1>
                         <p id="dateRating">N/A</p>
-                        <h1>Total score</h1>
+                        <h1>Hearts &#10084;</h1>
                         <p id="dateScore">0</p>
-                        <h1>People bonus left</h1>
-                        <p id="dateBonus">3</p>
                     </div>
                 </div>
                 <div class="float-right" id="dateControls">
                     <a href="javascript:game.match();" class="outter-object button big-button"><span>Match Couple</span></a>
-                    <a href="javascript:game.more();" class="outter-object button"><span>Ask more people</span></a>
+                    <a href="javascript:game.nextWeek();" class="outter-object button disabled" id="nextWeek"><span>Next week</span></a>
                     <a href="javascript:game.help();" class="outter-object button">Help</a>
                 </div>
             </section>
@@ -179,6 +177,25 @@ TERMINATING...%c%l
 %c%s
 GO BACK MACHINE IS TERMINATED
 $ </div>
+    <div id="consoleEndOfGameNotEnoughHearts" class="hidden">
+<span style="color: yellow">WARNING</span>%c%s
+%c%s
+> KILLING PHOSPHORUS DATING%c%l
+%c%s
+%c%s
+%c%s
+GO BACK MACHINE
+> GOING BACK TO: $m/$y %c%s
+
+<span style="color: yellow">YOU FAILED</span>
+
+PRESS ANY KEY TO TERMINATE %c%k
+
+TERMINATING...%c%l
+%c%s
+%c%s
+GO BACK MACHINE IS TERMINATED
+$ %c%k </div>
         <div id="consoleError" class="hidden">
 <p class="title"><span>Phosphorus Dating</span></p>
 
