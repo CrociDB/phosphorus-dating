@@ -901,7 +901,7 @@ var Game = function() {
 var game = new Game();
 var gameConsole = new GameConsole();
 gameConsole.init(gId("consoleStart").innerHTML, function() { gameConsole.hide(); });
-gameConsole.hide();
+// gameConsole.hide();
 
 (function() {
     game.start();
