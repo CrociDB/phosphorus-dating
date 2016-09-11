@@ -75,20 +75,19 @@ var dismiss_price = 20;
 var dismiss_price_increase = 5;
 
 var texts = {
-    date_conf: "<p>Do you want to match <b>$1</b> and <b>$2</b>?</p><p>After that they will go to a date and then you will get a date report.</p>",
+    date_conf: "<p>Do you want to match <b>$1</b> and <b>$2</b>?</p><p>After their date ends you will get a date report.</p>",
     date_end: "<p>Seems like the date between <b>$1</b> and <b>$2</b> finished. Date result: <span class=\"$3\">$4</span></p>",
-    week_started: "<p>Week <b>$1</b> just started. You need to match <b>$2</b> people in the left list to go to the next one.</p>",
-    welcome_help: "<div class=\"inner-object results-box\"><p>Phosphorus Dating is a very modern dating website, our matching algorithm was considered one of the most advanced ever created. We achieved more than <b>95%</b> of successful couples. But recently something happened and for some reason the accuracy is below <b>25%</b>, this is why we activated the manual mode and you're here.</p><p>You have <b>" + week_total + "</b> weeks to match couples based on their <b>gender</b>, <b>sexual orientation</b>, <b>age</b> and <b>interests</b>. Every week you will have to find a good couple for the people in the left list of the Phosphorus Dating program. Pick the right person on the right and match the couple. If you can't find a good match, you can try to ask more people, but be careful, it's limited.</p><p>When you match a couple, they will go out on a date and you can keep up with the progress on the lower left date list on the program. After that finishes you'll get a report.</p></div>",
-    finish: "You finished the period with <b>$1%</b>.",
+    week_started: "<p>Week <b>$1</b> just started. You need to match <b>$2</b> people this week.</p>",
+    welcome_help: "<div class=\"inner-object results-box\"><p>Phosphorus Dating is a very modern dating website, our matching algorithm was considered one of the most advanced ever created. We achieved more than <b>90%</b> of successful couples. But recently something happened and for some reason the accuracy is below <b>25%</b>, this is why we activated the manual mode and you're here.</p><p>You have <b>" + week_total + "</b> weeks, until our system is fixed, to match couples based on their <b>gender</b>, <b>sexual orientation</b>, <b>age</b> and <b>interests</b>. Every week you will have to find a good couple for the people in the left list of the Phosphorus Dating program. Pick the right person on the right and match the couple. If you can't find a good match, you can dismiss anybody on the right list, but it uses <b>Hearts &#10084;</b>, which you only get when you make a successful couple. You will also need <b>Hearts &#10084;</b> to go to the next week.</p><p>When you match a couple, they will go out on a date and you can keep up with the progress on the lower left date list on the program. After that finishes you'll get a report.</p></div>",
     finish_good: "That's remarkable! Congratulations. We will have to boost our algorithm to keep up with that mark.",
     finish_ok: "Good job. We hope our algorithm is finally fixed.",
     finish_bad: "That wasn't as good as we initially thought, but better than using a broken algorithm. Thanks for the effort.",
     finish_glitch: "That's A̶̦̒A̴a̽a̳̾A̶͖A̎͊A̿a͚͉͠A͠A̋a̦̩ã̷̸AͣA̳ͤ́A̩̥Ä̵́ͅ0͆0̋0̷̸̋f̰a̷͕͒ c͙͗f͑ b̡̕c͓̟̓ 0̵̇͡3͎̞͘ 0̞͑1̯̗͜ 2̲3ͧc͔5̴̞̥ AD",
-    week_next: "Next week ($1&#10084;)",
-    not_enough_hearts: "<p>You finished the week with <b>$1&#10084;</b>; and needed <b>$2&#10084;</b> to go to the next one.<p>",
-    dismiss_button: "Dismiss ($1&#10084;)",
-    dismiss_conf: "<p>If you dismiss <b>$1</b> another person will take its place. It will cost you <b>$2&#10084;</b>. Do you want to do that?</p>",
-    dismiss_not: "<p>You can't dismiss <b>$1</b>, because you don't have <b>$2&#10084;</b>.</p>",
+    week_next: "Next week ($1 &#10084;)",
+    not_enough_hearts: "<p>You finished the week with <b>$1 &#10084;</b>; and needed <b>$2 &#10084;</b> to go to the next one.<p>",
+    dismiss_button: "Dismiss ($1 &#10084;)",
+    dismiss_conf: "<p>If you dismiss <b>$1</b> another person will take its place. It will cost you <b>$2 &#10084;</b>. Do you want to do that?</p>",
+    dismiss_not: "<p>You can't dismiss <b>$1</b>, because you don't have <b>$2 &#10084;</b>.</p>",
 };
 
 var match_category = [
@@ -694,11 +693,11 @@ var Game = function() {
             rating = '' + rating + '%';
         }
 
-        this.dateWeek.innerHTML = this.week;
+        this.dateWeek.innerHTML = this.week + ' / ' + week_total;
         this.dateLeft.innerHTML = this.opeople.length;
-        this.dateCouples.innerHTML = this.goodWeekMatches + '/' + this.finishedMatches.length;
+        this.dateCouples.innerHTML = this.goodWeekMatches + ' / ' + this.finishedMatches.length;
         this.dateRating.innerHTML = rating;
-        this.dateScore.innerHTML = this.totalScore < 0 ? "Too low" : this.totalScore;
+        this.dateScore.innerHTML = this.totalScore;
     };
 
     this.drawPeople = function() {
@@ -902,7 +901,7 @@ var Game = function() {
 var game = new Game();
 var gameConsole = new GameConsole();
 gameConsole.init(gId("consoleStart").innerHTML, function() { gameConsole.hide(); });
-// gameConsole.hide();
+gameConsole.hide();
 
 (function() {
     game.start();
