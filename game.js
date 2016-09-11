@@ -69,9 +69,10 @@ var sex_orient = [
 ];
 
 var week_total = 5;
-var week_price = 0;
-var week_price_increase = 0;
-var dismiss_price = 0;
+var week_price = 10;
+var week_price_increase = 5;
+var dismiss_price = 20;
+var dismiss_price_increase = 5;
 
 var texts = {
     date_conf: "<p>Do you want to match <b>$1</b> and <b>$2</b>?</p><p>After that they will go to a date and then you will get a date report.</p>",
@@ -84,7 +85,7 @@ var texts = {
     finish_bad: "That wasn't as good as we initially thought, but better than using a broken algorithm. Thanks for the effort.",
     finish_glitch: "That's A̶̦̒A̴a̽a̳̾A̶͖A̎͊A̿a͚͉͠A͠A̋a̦̩ã̷̸AͣA̳ͤ́A̩̥Ä̵́ͅ0͆0̋0̷̸̋f̰a̷͕͒ c͙͗f͑ b̡̕c͓̟̓ 0̵̇͡3͎̞͘ 0̞͑1̯̗͜ 2̲3ͧc͔5̴̞̥ AD",
     week_next: "Next week ($1&#10084;)",
-    not_enough_hearts: "<p>You finished the week with <b>$1 &#10084</b>; and needed <b>$2 #10084;</b> to go to the next one.<p>",
+    not_enough_hearts: "<p>You finished the week with <b>$1&#10084;</b>; and needed <b>$2&#10084;</b> to go to the next one.<p>",
     dismiss_button: "Dismiss ($1&#10084;)",
     dismiss_conf: "<p>If you dismiss <b>$1</b> another person will take its place. It will cost you <b>$2&#10084;</b>. Do you want to do that?</p>",
     dismiss_not: "<p>You can't dismiss <b>$1</b>, because you don't have <b>$2&#10084;</b>.</p>",
@@ -749,6 +750,9 @@ var Game = function() {
         this.currentPeople[1] = this.people[this.people.length-1];
 
         this.totalScore -= this.dismissPrice;
+        this.dismissPrice += dismiss_price_increase;
+        this.dismissButton.innerHTML = "<span>" + texts.dismiss_button.replace("$1", this.dismissPrice) + "</span>";
+        
         this.drawPeople();
         this.renderDetails();
         this.updateDateData();
@@ -898,7 +902,7 @@ var Game = function() {
 var game = new Game();
 var gameConsole = new GameConsole();
 gameConsole.init(gId("consoleStart").innerHTML, function() { gameConsole.hide(); });
-gameConsole.hide();
+// gameConsole.hide();
 
 (function() {
     game.start();
