@@ -596,6 +596,7 @@ var Game = function() {
     this.currentPeople = [0, 0];
 
     this.weekPrice = week_price;
+    this.maxPeople = 8;
 
     // DOM elements
     this.dateWeek = gId("dateWeek");
@@ -611,6 +612,7 @@ var Game = function() {
         var txt = "<p>Welcome to <b>Phosphorus Dating</b>. You are logged in as <span style=\"color: green\">cecilia.dent</span>.</p>";
         txt += texts.welcome_help;
         showDialogOk("Welcome", txt);
+        this.randomPeople();
         this.startWeek();
     };
 
@@ -630,7 +632,7 @@ var Game = function() {
         this.finishedMatches = [];
 
         this.startWeekPeople();
-        this.randomPeople();
+        this.addWeekPeople();
 
         this.drawPeople();
         this.renderDetails();
@@ -661,6 +663,15 @@ var Game = function() {
     this.randomPeople = function() {
         this.people = [];
         for (var i = 0; i < 7; i++)
+        {
+            var p = new Person();
+            this.people.push(p);
+        }
+    };
+
+    this.addWeekPeople = function() {
+        var newPeople = this.maxPeople - this.people.length;
+        for (var i = 0; i < newPeople; i++)
         {
             var p = new Person();
             this.people.push(p);
