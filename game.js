@@ -76,7 +76,12 @@ var texts = {
     bonus_conf: "<p>Are you sure you want to swap the available people? You have <b>$1</b> bonus left.</p>",
     bonus_not: "<p>You can't do that because you don't have any bonus left.</p>",
     week_started: "<p>Week <b>$1</b> just started. You need to match <b>$2</b> people in the left list to go to the next one.</p>",
-    welcome_help: "<div class=\"inner-object results-box\"><p>Phosphorus Dating is a very modern dating website, our matching algorithm was considered one of the most advanced ever created. We achieved more than <b>95%</b> of successful couples. But recently something happened and for some reason the accuracy is below <b>25%</b>, this is why we activated the manual mode and you're here.</p><p>You have <b>" + total_weeks + "</b> weeks to match couples based on their <b>gender</b>, <b>sexual orientation</b>, <b>age</b> and <b>interests</b>. Every week you will have to find a good couple for the people in the left list of the Phosphorus Dating program. Pick the right person on the right and match the couple. If you can't find a good match, you can try to ask more people, but be careful, it's limited.</p><p>When you match a couple, they will go out on a date and you can keep up with the progress on the lower left date list on the program. After that finishes you'll get a report.</p></div>"
+    welcome_help: "<div class=\"inner-object results-box\"><p>Phosphorus Dating is a very modern dating website, our matching algorithm was considered one of the most advanced ever created. We achieved more than <b>95%</b> of successful couples. But recently something happened and for some reason the accuracy is below <b>25%</b>, this is why we activated the manual mode and you're here.</p><p>You have <b>" + total_weeks + "</b> weeks to match couples based on their <b>gender</b>, <b>sexual orientation</b>, <b>age</b> and <b>interests</b>. Every week you will have to find a good couple for the people in the left list of the Phosphorus Dating program. Pick the right person on the right and match the couple. If you can't find a good match, you can try to ask more people, but be careful, it's limited.</p><p>When you match a couple, they will go out on a date and you can keep up with the progress on the lower left date list on the program. After that finishes you'll get a report.</p></div>",
+    finish: "You finished the period with <b>$1%</b>.",
+    finish_good: "That's remarkable! Congratulations. We will have to boost our algorithm to keep up with that mark.",
+    finish_ok: "Good job. We hope our algorithm is finally fixed.",
+    finish_bad: "That wasn't as good as we initially thought, but better than using a broken algorithm. Thanks for the effort.",
+    finish_glitch: "That's A̶̦̒A̴a̽a̳̾A̶͖A̎͊A̿a͚͉͠A͠A̋a̦̩ã̷̸AͣA̳ͤ́A̩̥Ä̵́ͅ0͆0̋0̷̸̋f̰a̷͕͒ c͙͗f͑ b̡̕c͓̟̓ 0̵̇͡3͎̞͘ 0̞͑1̯̗͜ 2̲3ͧc͔5̴̞̥ AD"
 };
 
 var match_category = [
@@ -810,13 +815,34 @@ var Game = function() {
     };
 
     this.endOfGame = function() {
+        var rating = 'N/A';
+        if (this.totalMatches > 0) {
+            rating = Math.floor(this.totalGoodMatches / this.totalMatches * 100);
+        }
+
+        var msg = texts.finish.replace("$1", rating);
+
         if (this.ceciliaMatch && this.ceciliaMatch.total > 0) {
-            gameConsole.init(gId("consoleEndOfGame").innerHTML);
+
+            if (rating >= 90) {
+                msg += " " + texts.finish_good; 
+            } else if (rating >= 65) {
+                msg += " " + texts.finish_ok; 
+            } else {
+                msg += " " + texts.finish_bad; 
+            }
+
+            showDialogOk("Finished", msg, function() {
+                gameConsole.init(gId("consoleEndOfGameSuccess").innerHTML);
+            });
         } else {
-            gameConsole.init(gId("consoleError").innerHTML, function() { 
-                gameConsole.hide(); 
-                gameConsole.init(gId("consoleEndOfGame").innerHTML);
-            }, "error");
+            msg += " " + texts.finish_glitch;
+            showDialogOk("Finished", msg, function() {
+                gameConsole.init(gId("consoleError").innerHTML, function() { 
+                    gameConsole.hide(); 
+                    gameConsole.init(gId("consoleEndOfGameFail").innerHTML);
+                }, "error");
+            });
         }
     };
 };
