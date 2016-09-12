@@ -677,7 +677,7 @@ var Game = function() {
     };
 
     this.addWeekPeople = function() {
-        var newPeople = (this.maxPeople - this.people.length) + Math.floor((this.week) / 3);
+        var newPeople = (this.maxPeople - this.people.length) + Math.floor((this.week) / 2);
         for (var i = 0; i < newPeople; i++)
         {
             var p = new Person();
@@ -885,14 +885,18 @@ var Game = function() {
             }
 
             showDialogOk("Finished", msg, function() {
-                gameConsole.init(gId("consoleEndOfGameSuccess").innerHTML);
+                gameConsole.init(gId("consoleEndOfGameSuccess").innerHTML, function() {
+                    location.reload();
+                });
             });
         } else {
             msg += " " + texts.finish_glitch;
             showDialogOk("Finished", msg, function() {
                 gameConsole.init(gId("consoleError").innerHTML, function() { 
                     gameConsole.hide(); 
-                    gameConsole.init(gId("consoleEndOfGameFail").innerHTML);
+                    gameConsole.init(gId("consoleEndOfGameFail").innerHTML, function() {
+                        location.reload();
+                    });
                 }, "error");
             });
         }
