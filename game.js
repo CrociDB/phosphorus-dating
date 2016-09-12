@@ -676,7 +676,7 @@ var Game = function() {
     };
 
     this.addWeekPeople = function() {
-        var newPeople = this.maxPeople - this.people.length;
+        var newPeople = (this.maxPeople - this.people.length) + Math.floor((this.week) / 3);
         for (var i = 0; i < newPeople; i++)
         {
             var p = new Person();
